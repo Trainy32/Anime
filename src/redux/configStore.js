@@ -1,8 +1,7 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux'
-import words from './modules/words'
 import thunk from 'redux-thunk'
 
-const rootReducer = combineReducers({words})
+const rootReducer = combineReducers()
 const middlewares = [thunk]
 
 const enhancer = applyMiddleware(...middlewares)
