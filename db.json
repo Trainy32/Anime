@@ -1,7 +1,7 @@
 {
   "posts": [
     {
-    "post_id" : 123,
+    "post_id" : 1,
     "created_at": "2022-06-10T10:54:11.076Z",
     "title": "카드캡터 체리",
     "thumbnail_url":"https://movie-phinf.pstatic.net/20160314_26/1457920153891qdBTB_JPEG/movie_image.jpg",
@@ -12,7 +12,7 @@
     "likes" : 12
     },
     {
-      "post_id" : 124,
+      "post_id" : 2,
       "created_at": "2022-06-10T10:56:20.960Z",
       "title": "짱구는 못말려",
       "thumbnail_url":"https://movie-phinf.pstatic.net/20111223_270/13245912099492UR7d_JPEG/movie_image.jpg",
@@ -22,5 +22,32 @@
       "user_id": "user123",
       "likes" : 15
     }
+  ],
+
+  "comment" : [
+    {
+      "post_id" : 1,
+      "comment_id": 1,
+      "user_id": "user111",
+      "user_nick": "2조화이팅",
+      "comment_text": "저도 이 만화 좋아해요!",
+      "created_at" : "2022-06-10T10:54:11.076Z"
+      },
+      {
+        "post_id" : 1,
+        "comment_id": 2,
+        "user_id": "user111",
+        "user_nick": "2번째",
+        "comment_text": "2번째 코멘트에요",
+        "created_at" : "2022-06-10T12:54:11.076Z"
+      },
+      {
+        "post_id" : 2,
+        "comment_id": 3,
+        "user_id": "user111",
+        "user_nick": "포스트2번",
+        "comment_text": "2번째 포스트의 첫 코멘트에요",
+        "created_at" : "2022-06-10T10:54:11.076Z"
+      },
   ]
 }
