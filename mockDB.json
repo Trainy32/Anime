@@ -1,0 +1,27 @@
+{
+  "posts": [
+    {
+    "post_id" : 123,
+    "created_at": "2022-06-10T10:54:11.076Z",
+    "title": "카드캡터 체리",
+    "thumbnail_url":"https://movie-phinf.pstatic.net/20160314_26/1457920153891qdBTB_JPEG/movie_image.jpg",
+    "onair_year": 1999,
+    "content": "재미있는 만화였어요!",
+    "ost_url": "https://www.youtube.com/watch?v=e6zp5Qob9ko",
+    "user_id": "user123",
+    "likes" : 12
+    },
+    {
+      "post_id" : 124,
+      "created_at": "2022-06-10T10:56:20.960Z",
+      "title": "짱구는 못말려",
+      "thumbnail_url":"https://movie-phinf.pstatic.net/20111223_270/13245912099492UR7d_JPEG/movie_image.jpg",
+      "onair_year": 1998,
+      "content": "재미있는 만화였어요!",
+      "ost_url": "https://www.youtube.com/watch?v=XHMdIA6bEOE",
+      "user_id": "user123",
+      "likes" : 15
+    }
+  ]
+  
+}
