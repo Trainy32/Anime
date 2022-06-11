@@ -38,7 +38,8 @@ export const create_post_AX = (post_data) => {
 
 export const update_post_AX = (post_data) => {
   return function (dispatch) {
-    console.log(post_data)
+    axios.put('http://localhost:5001/posts', post_data)
+    .then(() => dispatch(update_post(post_data)))
   }
 }
 
