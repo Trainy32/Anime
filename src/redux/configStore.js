@@ -1,8 +1,8 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
-import Posts from './modules/posts'
+import posts from './modules/posts'
 
-const rootReducer = combineReducers({ Posts })
+const rootReducer = combineReducers({ posts })
 const middlewares = [thunk]
 
 const enhancer = applyMiddleware(...middlewares)
