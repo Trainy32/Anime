@@ -19,7 +19,7 @@ function Write() {
 
 // 게시물 수정인지, 새로 쓰는것인지 판별합니다 :)
   const isNew = params.post_id === 'new' ? true : false
-
+  
 
 // 새로 쓰는 데이터라면 : 현재 포스트의 데이터를 불러오고, 로딩 완료여부를 체크합니다.
   const [thisPost, setThisPost] = React.useState(null)
@@ -31,8 +31,8 @@ function Write() {
       .then(response => setThisPost(...response.data))
       .then(setIsLoaded(true))
     }
+    console.log(thisPost)
   }, [])
-
 
 // 입력창 정보 받아오기
   const title_ref =  useRef(null);
