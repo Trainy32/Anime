@@ -9,13 +9,15 @@ import styled from 'styled-components'
 
 // 컴포넌트 Imports
 import AnimeList from "./AnimeList";
+import Write from "./Write";
 
 
 function App() {
   return (
     <div className="App">
       <Routes>
-      
+      <Route path='/' element={<AnimeList/>}/> 
+      <Route path='/write' element={<Write/>}/> 
       </Routes>
     </div>
   );
