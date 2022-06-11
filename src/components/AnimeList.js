@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 // 리덕스 관련 Imports
-import {useDispatch, useSelector} from 'react-redux'
-import { load_posts_AX } from './redux/modules/posts'
+import { useDispatch, useSelector } from 'react-redux'
+import { load_posts_AX } from '../redux/modules/posts'
 
 // CSS 관련 Imports
 import styled from 'styled-components'
@@ -29,17 +29,19 @@ function AnimeList() {
 
       <ListWrap>
         {
-          posts.map((p,i) => {return (
-            <Cards key={i}>
-              <CardThumb onClick={()=>navigate('/post/'+p.id)} thumbImg={p.thumbnail_url} />
-              <Texts>
-                <h5>{p.onair_year}~</h5>
-                <h3>{p.title}</h3>
-                <span>❤️ {p.likes} </span>
-                <button onClick={() => navigate('/write/'+p.id)}>(임시) 수정</button>
-              </Texts>
-            </Cards>
-          )})
+          posts.map((p, i) => {
+            return (
+              <Cards key={i}>
+                <CardThumb onClick={() => navigate('/post/' + p.id)} thumbImg={p.thumbnail_url} />
+                <Texts>
+                  <h5>{p.onair_year}~</h5>
+                  <h3>{p.title}</h3>
+                  <span>❤️ {p.likes} </span>
+                  <button onClick={() => navigate('/write/' + p.id)}>(임시) 수정</button>
+                </Texts>
+              </Cards>
+            )
+          })
         }
       </ListWrap>
     </>
