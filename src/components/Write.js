@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 // 리덕스 관련 Imports
 import {useDispatch, useSelector} from 'react-redux'
-import { create_post_AX } from './redux/modules/posts'
+import { create_post_AX } from '../redux/modules/posts'
 
 // CSS 관련 Imports
 import styled from 'styled-components'

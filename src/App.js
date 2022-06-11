@@ -28,7 +28,7 @@ function App() {
       <Header_nav />
       <Routes>
         <Route path='/' element={<AnimeList />} />
-        <Route path='/write' element={<Write />} />
+        <Route path='/write/:post_id' element={<Write />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
       </Routes>
