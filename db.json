@@ -1,53 +1,78 @@
 {
   "posts": [
     {
-    "post_id" : 1,
-    "created_at": "2022-06-10T10:54:11.076Z",
-    "title": "카드캡터 체리",
-    "thumbnail_url":"https://movie-phinf.pstatic.net/20160314_26/1457920153891qdBTB_JPEG/movie_image.jpg",
-    "onair_year": 1999,
-    "content": "재미있는 만화였어요!",
-    "ost_url": "https://www.youtube.com/watch?v=e6zp5Qob9ko",
-    "user_id": "user123",
-    "likes" : 12
+      "id": 0,
+      "post_id": 1,
+      "created_at": "2022-06-10T10:54:11.076Z",
+      "title": "카드캡터 체리",
+      "thumbnail_url": "https://movie-phinf.pstatic.net/20160314_26/1457920153891qdBTB_JPEG/movie_image.jpg",
+      "onair_year": 1999,
+      "content": "재미있는 만화였어요!",
+      "ost_url": "https://www.youtube.com/watch?v=e6zp5Qob9ko",
+      "user_id": "user123",
+      "likes": 12
     },
     {
-      "post_id" : 2,
+      "id": 1,
+      "post_id": 2,
       "created_at": "2022-06-10T10:56:20.960Z",
       "title": "짱구는 못말려",
-      "thumbnail_url":"https://movie-phinf.pstatic.net/20111223_270/13245912099492UR7d_JPEG/movie_image.jpg",
+      "thumbnail_url": "https://movie-phinf.pstatic.net/20111223_270/13245912099492UR7d_JPEG/movie_image.jpg",
       "onair_year": 1998,
       "content": "재미있는 만화였어요!",
       "ost_url": "https://www.youtube.com/watch?v=XHMdIA6bEOE",
       "user_id": "user123",
-      "likes" : 15
+      "likes": 15
+    },
+    {
+      "id": 2,
+      "post_id": 0,
+      "created_at": "2022-06-10T09:54:11.076Z",
+      "title": "만화 제목이에요",
+      "thumbnail_url": "https://mblogthumb-phinf.pstatic.net/20151210_192/whanfwn7_1449729673781P3BFn_PNG/pokemon_card___ash__misty__brock_y_pikachu_by_adfpf1-d6jexcj.png?type=w2",
+      "onair_year": 1997,
+      "content": "피카츄 귀여워!",
+      "ost_url": "https://www.youtube.com/watch?v=mPaNK28VSoI",
+      "user_id": "user123",
+      "likes": 10
+    },
+    {
+      "id": 3,
+      "post_id": 11,
+      "created_at": "2022-06-10T10:54:11.076Z",
+      "title": "카드캡터 체리",
+      "thumbnail_url": "https://newsimg.sedaily.com/2022/04/05/264KQDPTYX_1.jpg",
+      "onair_year": 1999,
+      "content": "재미있는 만화였어요!",
+      "ost_url": "https://www.youtube.com/watch?v=e6zp5Qob9ko",
+      "user_id": "user123",
+      "likes": 12
     }
   ],
-
-  "comment" : [
+  "comment": [
     {
-      "post_id" : 1,
+      "post_id": 1,
       "comment_id": 1,
       "user_id": "user111",
       "user_nick": "2조화이팅",
       "comment_text": "저도 이 만화 좋아해요!",
-      "created_at" : "2022-06-10T10:54:11.076Z"
-      },
-      {
-        "post_id" : 1,
-        "comment_id": 2,
-        "user_id": "user111",
-        "user_nick": "2번째",
-        "comment_text": "2번째 코멘트에요",
-        "created_at" : "2022-06-10T12:54:11.076Z"
-      },
-      {
-        "post_id" : 2,
-        "comment_id": 3,
-        "user_id": "user111",
-        "user_nick": "포스트2번",
-        "comment_text": "2번째 포스트의 첫 코멘트에요",
-        "created_at" : "2022-06-10T10:54:11.076Z"
-      }
+      "created_at": "2022-06-10T10:54:11.076Z"
+    },
+    {
+      "post_id": 1,
+      "comment_id": 2,
+      "user_id": "user111",
+      "user_nick": "2번째",
+      "comment_text": "2번째 코멘트에요",
+      "created_at": "2022-06-10T12:54:11.076Z"
+    },
+    {
+      "post_id": 2,
+      "comment_id": 3,
+      "user_id": "user111",
+      "user_nick": "포스트2번",
+      "comment_text": "2번째 포스트의 첫 코멘트에요",
+      "created_at": "2022-06-10T10:54:11.076Z"
+    }
   ]
 }

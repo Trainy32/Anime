@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+
 // 액션
 const LOAD = 'posts/LOAD'
 const CREATE = 'posts/CREATE'
@@ -19,41 +22,47 @@ export function update_post(post_data) {
 
 
 //미들웨어
+export const load_posts_AX = () =>{
+  return function (dispatch) {
+    axios.get('http://localhost:5001/posts')
+    .then(response => dispatch(load_posts(response.data)))
+  }
+}
 
+export const create_post_AX = (post_data) => {
+  return function (dispatch) {
+    axios.post('http://localhost:5001/posts', post_data)
+    .then(() => dispatch(create_post(post_data)))
+  }
+}
+
+export const update_post_AX = (post_data) => {
+  return function (dispatch) {
+    console.log(post_data)
+  }
+}
 
 
 // 초기값
 const initialState = {
-  posts: [
-    {
-      "post_id" : 0,
-      "created_at": "2022-06-10T09:54:11.076Z",
-      "title": "만화 제목이에요",
-      "thumbnail_url":"https://mblogthumb-phinf.pstatic.net/20151210_192/whanfwn7_1449729673781P3BFn_PNG/pokemon_card___ash__misty__brock_y_pikachu_by_adfpf1-d6jexcj.png?type=w2",
-      "onair_year": 1997,
-      "content": "피카츄 귀여워!",
-      "ost_url": "https://www.youtube.com/watch?v=mPaNK28VSoI",
-      "user_id": "user123",
-      "likes" : 12
-      },
-  ]
+  list: [{}],
 }
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'posts/LOAD': {
-      return { posts: action.post_list }
+      return { is_loaded : true, list: action.post_list }
     }
 
     case 'posts/CREATE': {
-      const new_post_list = [...state.list, action.post_data]
-      return { posts: new_post_list }
+      const new_post_list = [...state.posts, action.post_data]
+      return { ...state, list: new_post_list }
     }
     
     case 'posts/UPDATE': {
-      const new_post_list = state.list.map((e, i) =>
-        parseInt(action.post_data.post_id) === e.id ? { ...action.post_data } : e);
-      return { posts: new_post_list }
+      const new_post_list = state.posts.map((e, i) =>
+        parseInt(action.post_data.id) === e.id ? { ...action.post_data } : e);
+      return { ...state, list: new_post_list }
     }
 
 
