@@ -15,8 +15,6 @@ function AnimeList() {
   const dispatch = useDispatch()
   const posts = useSelector((state) => state.posts.list)
 
-  console.log(posts)
-
   React.useEffect(() => {
     dispatch(load_posts_AX())
   }, [])
