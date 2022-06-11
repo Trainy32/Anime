@@ -1,10 +1,32 @@
 import React from "react";
+import axios from 'axios';
 // CSS 관련 Imports
 import styled from 'styled-components'
 
 
 
 const Detail = () => {
+
+    //데이터 가져오기
+    const loadpost = () => {
+        // axios({
+        //     method:'get',
+        //     url: 'http://localhost:5001/posts'
+        // }).then(response => {
+        //     console.log(response)
+        // });
+
+        axios.get('http://localhost:5001/posts').then(response => {
+                 console.log(response)
+             });
+    
+
+    }
+
+    React.useEffect(()=>{
+        loadpost();
+    })
+
 
     return (
         <Container>
