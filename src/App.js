@@ -10,7 +10,7 @@ import styled from 'styled-components'
 // 컴포넌트 Imports
 import AnimeList from "./AnimeList";
 import Write from "./Write";
-
+import Detail from "./Detail";
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
       <Routes>
       <Route path='/' element={<AnimeList/>}/> 
       <Route path='/write' element={<Write/>}/> 
+      <Route path='/detail' element={<Detail/>}/> 
       </Routes>
     </div>
   );
