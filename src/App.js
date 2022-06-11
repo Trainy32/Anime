@@ -14,6 +14,7 @@ import AnimeList from "./components/AnimeList";
 import Write from "./components/Write";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import Detail from "./Detail";
 
 // 연결 예정
 import Header_home from "./components/Header_home";
@@ -31,6 +32,7 @@ function App() {
         <Route path='/write/:post_id' element={<Write />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
+        <Route path='/detail' element={<Detail />} />
       </Routes>
     </div>
   );
