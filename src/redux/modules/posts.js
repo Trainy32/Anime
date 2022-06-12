@@ -61,8 +61,8 @@ export default function reducer(state = initialState, action = {}) {
     }
     
     case 'posts/UPDATE': {
-      const new_post_list = state.posts.map((e, i) =>
-        parseInt(action.post_data.id) === e.id ? { ...action.post_data } : e);
+      const new_post_list = state.posts.map((a) =>
+        parseInt(action.post_data.id) === a.id ? { ...action.post_data } : a);
       return { ...state, list: new_post_list }
     }
 

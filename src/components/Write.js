@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import axios from 'axios'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
 // 리덕스 관련 Imports
 import { useDispatch } from 'react-redux'
-import { create_post_AX } from '../redux/modules/posts'
+import { create_post_AX, update_post_AX } from '../redux/modules/posts'
 
 // 이미지 저장 DB
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
@@ -30,24 +30,38 @@ function Write() {
   React.useEffect(() => {
     if (!isNew) {
       axios.get('http://localhost:5001/posts?id='+params.post_id)
-      .then(response => { setThisPost(...response.data) })
+      .then(response => { 
+        setThisPost(...response.data)
+        setImgUrl(response.data[0].thumbnail_url)
+       })
     }
   }, [])
-
+  
   
 // 입력창 정보 받아오기
   const title_ref =  useRef(null);
-  const onair_year_ref =  useRef(null);
-  const thumbnail_ref =  useRef(null);
+  const onair_year_ref = useRef(null);
+  const thumbnail_ref = useRef(null);
   const ost_url_ref =  useRef(null);
   const content_ref =  useRef(null);
 
+
+// 이미지 파이어베이스 DB에 업로드 & url을 state에 imgUrl 이름으로 저장
+  const [imgUrl, setImgUrl] = React.useState(null)
+
+  const uploadImg = async (e) => {
+    const file_path = 'animeImg/' + new Date().getTime()
+    const uploaded_file = await uploadBytes(ref(storage, file_path), e.target.files[0])
+    const file_url = await getDownloadURL(uploaded_file.ref)
+    thumbnail_ref.current = { url: file_url }
+    setImgUrl(thumbnail_ref.current.url)
+  }
 
 // 작성하기 버튼 눌렀을때 :)
   const writePost = () => {
     const new_post = {
         title: title_ref.current.value,
-        thumbnail_url:"https://movie-phinf.pstatic.net/20160314_26/1457920153891qdBTB_JPEG/movie_image.jpg",
+        thumbnail_url: imgUrl ,
         onair_year: onair_year_ref.current.value,
         content: content_ref.current.value,
         ost_url: ost_url_ref.current.value,
@@ -56,13 +70,24 @@ function Write() {
     dispatch(create_post_AX(new_post))
   }
 
-// 로딩 완료되면 return 합니다
+  const EditPost = () => {
+    const new_post = {
+        title: title_ref.current.value,
+        thumbnail_url: imgUrl ,
+        onair_year: onair_year_ref.current.value,
+        content: content_ref.current.value,
+        ost_url: ost_url_ref.current.value,
+    }
+    dispatch(update_post_AX(new_post))
+  }
+
+
   return (
     <FormWrap>
 
       <button onClick={()=> navigate('/')}>임시버튼 : 리스트 가기</button>
       
-      <ImgPreview htmlFor="post_thumb"/>
+      <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl}/>
       
       <InputsRight>
       <label>만화제목 
@@ -74,7 +99,7 @@ function Write() {
         defaultValue={ thisPost ? thisPost.onair_year : '2000'} /></label>
 
       <label>만화이미지 
-        <input type='file' id="post_thumb" ref={thumbnail_ref}/></label> 
+        <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg}/></label> 
 
       <label>만화 OST 
         <input type='url' ref={ost_url_ref} 
@@ -91,6 +116,7 @@ function Write() {
       defaultValue={ thisPost ? thisPost.content : '' }/>
 
       <button onClick={writePost}> 등록하기 </button>
+      <button onClick={EditPost}> 수정하기 </button>
 
     </FormWrap>
   )
@@ -121,7 +147,8 @@ const InputsRight = styled.div`
 `
 
 const ImgPreview = styled.label`
-background: #ddd;
+background-color: #ddd;
+background: ${(props) => props.imgUrl ? 'url('+props.imgUrl+')' : '#ddd'};
 background-size: cover;
 height: 400px;
 width: 300px;
