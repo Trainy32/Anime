@@ -4,8 +4,12 @@ import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 
 // 리덕스 관련 Imports
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { create_post_AX } from '../redux/modules/posts'
+
+// 이미지 저장 DB
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { storage } from '../firebase'
 
 // CSS 관련 Imports
 import styled from 'styled-components'
@@ -20,20 +24,17 @@ function Write() {
 // 게시물 수정인지, 새로 쓰는것인지 판별합니다 :)
   const isNew = params.post_id === 'new' ? true : false
   
-
-// 새로 쓰는 데이터라면 : 현재 포스트의 데이터를 불러오고, 로딩 완료여부를 체크합니다.
+// 수정이라면 : 현재 포스트의 데이터를 불러와 state로 저장합니다
   const [thisPost, setThisPost] = React.useState(null)
-  const [isLoaded, setIsLoaded] = React.useState(false)
 
   React.useEffect(() => {
     if (!isNew) {
       axios.get('http://localhost:5001/posts?id='+params.post_id)
-      .then(response => setThisPost(...response.data))
-      .then(setIsLoaded(true))
+      .then(response => { setThisPost(...response.data) })
     }
-    console.log(thisPost)
   }, [])
 
+  
 // 입력창 정보 받아오기
   const title_ref =  useRef(null);
   const onair_year_ref =  useRef(null);
@@ -55,58 +56,75 @@ function Write() {
     dispatch(create_post_AX(new_post))
   }
 
+// 로딩 완료되면 return 합니다
   return (
     <FormWrap>
-      <button onClick={()=> navigate('/')}>임시버튼 : 리스트 가기</button>
 
+      <button onClick={()=> navigate('/')}>임시버튼 : 리스트 가기</button>
+      
+      <ImgPreview htmlFor="post_thumb"/>
+      
+      <InputsRight>
       <label>만화제목 
         <input type='text' ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
-        defaultValue={ isLoaded ? '로딩됐어' : '아직아니야' }/></label>
+        defaultValue={ thisPost ? thisPost.title : '' }/></label>
 
       <label>방영연도 
         <input type='number' ref={onair_year_ref} 
-        defaultValue='2000'/></label>
+        defaultValue={ thisPost ? thisPost.onair_year : '2000'} /></label>
 
       <label>만화이미지 
-        <input type='file' id="post_thumb" ref={thumbnail_ref} 
-        defaultValue=''/></label> <ImgPreview htmlFor="post_thumb"/>
+        <input type='file' id="post_thumb" ref={thumbnail_ref}/></label> 
 
       <label>만화 OST 
         <input type='url' ref={ost_url_ref} 
-        defaultValue='' placeholder="추억의 주제가 링크를 넣어주시겠어요? (필수 x)"/></label>
+         defaultValue={ thisPost ? thisPost.ost_url : '' } placeholder="추억의 주제가 링크를 넣어주시겠어요? (필수 x)"/></label>
 
         <YoutubeBtn target='blank' href="https://www.youtube.com/">
           <YoutubeIcon>
             <BsYoutube/>
           </YoutubeIcon>  유튜브 <br/> 바로가기
         </YoutubeBtn>
+      </InputsRight>
 
       <label>만화소개</label> <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
-      defaultValue=''/>
+      defaultValue={ thisPost ? thisPost.content : '' }/>
 
       <button onClick={writePost}> 등록하기 </button>
 
     </FormWrap>
-  );
+  )
 }
 
 const FormWrap = styled.div`
   margin: 120px auto;
   display:flex;
   flex-direction: column;
-  width: 60%;
-  gap: 20px;
+  width: 90%;
+  max-width: 800px;
 
   input {
     height: 30px;
     width: 400px;
+    margin: 10px;
+  }
+
+  button {
+    height: 50px;
+    margin: 20px;
   }
 `
+
+const InputsRight = styled.div`
+  display:flex;
+  flex-direction: column;
+`
+
 const ImgPreview = styled.label`
 background: #ddd;
 background-size: cover;
-height: 80px;
-width: 60px;
+height: 400px;
+width: 300px;
 `
 
 const YoutubeBtn = styled.a`
