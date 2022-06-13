@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 
 
 // 토큰 유무 확인 후 레이아웃 변경
-function Header_home() {
+const Header_home = () => {
   return (
     <HeaderWrap>
       <TitleBox>
         <h1>추억의 만화 영화</h1>
-        <Link to='/write'>작성 페이지</Link>
+        <Link to='/write/new'>작성 페이지</Link>
       </TitleBox>
       <UserBox>
         <div><img src='' alt="" /></div>

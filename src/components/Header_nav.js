@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
 
-function Header_nav() {
+const Header_nav = () => {
   return (
     <HeaderWrap>
       <HomeBtn className="btn" to='/'>로고</HomeBtn>

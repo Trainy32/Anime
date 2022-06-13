@@ -32,7 +32,7 @@ function AnimeList() {
           posts.map((p, i) => {
             return (
               <Cards key={i}>
-                <CardThumb onClick={() => navigate('/post/' + p.id)} thumbImg={p.thumbnail_url} />
+                <CardThumb onClick={() => navigate('/detail/' + p.id)} thumbImg={p.thumbnail_url} />
                 <Texts>
                   <h5>{p.onair_year}~</h5>
                   <h3>{p.title}</h3>

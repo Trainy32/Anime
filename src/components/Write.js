@@ -31,8 +31,8 @@ function Write() {
         .then(response => setThisPost(...response.data))
         .then(setIsLoaded(true))
     }
+    console.log(thisPost)
   }, [])
-
 
   // 입력창 정보 받아오기
   const title_ref = useRef(null);
@@ -40,7 +40,6 @@ function Write() {
   const thumbnail_ref = useRef(null);
   const ost_url_ref = useRef(null);
   const content_ref = useRef(null);
-
 
   // 작성하기 버튼 눌렀을때 :)
   const writePost = () => {
