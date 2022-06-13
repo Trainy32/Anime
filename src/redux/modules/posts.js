@@ -36,10 +36,13 @@ export const create_post_AX = (post_data) => {
   }
 }
 
-export const update_post_AX = (post_data) => {
-  return function (dispatch) {
-    axios.put('http://localhost:5001/posts', post_data)
-    .then(() => dispatch(update_post(post_data)))
+export const update_post_AX = (post_id, post_data) => {
+  return function (dispatch) { 
+    axios.put('http://localhost:5001/posts/'+post_id, post_data)
+    .then((response) => {
+    console.log(response) 
+    dispatch(update_post(post_data))
+  })
   }
 }
 
@@ -61,7 +64,7 @@ export default function reducer(state = initialState, action = {}) {
     }
     
     case 'posts/UPDATE': {
-      const new_post_list = state.posts.map((a) =>
+      const new_post_list = state.list.map((a) =>
         parseInt(action.post_data.id) === a.id ? { ...action.post_data } : a);
       return { ...state, list: new_post_list }
     }
