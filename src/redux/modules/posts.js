@@ -25,8 +25,7 @@ export function update_post(post_data) {
 export const load_posts_like_AX = () =>{
   return function (dispatch) {
     axios.get('http://localhost:5001/posts')
-      .then(response => dispatch(load_posts(response.data)))
-
+    .then(response => dispatch(load_posts(response.data)))
   }
 }
 
@@ -39,11 +38,10 @@ export const load_posts_year_AX = () =>{
 
 export const create_post_AX = (post_data) => {
   return function (dispatch) {
-    axios.post('http://localhost:5001/user', post_data)
-      .then(() => dispatch(create_post(post_data)))
+    axios.post('http://localhost:5001/posts', post_data)
+    .then(() => dispatch(create_post(post_data)))
   }
 }
-
 
 export const update_post_AX = (post_id, post_data) => {
   return function (dispatch) { 
@@ -64,14 +62,14 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'posts/LOAD': {
-      return { is_loaded: true, list: action.post_list }
+      return { is_loaded : true, list: action.post_list }
     }
 
     case 'posts/CREATE': {
       const new_post_list = [...state.list, action.post_data]
       return { ...state, list: new_post_list }
     }
-
+    
     case 'posts/UPDATE': {
       const new_post_list = state.list.map((a) =>
         parseInt(action.post_data.id) === a.id ? { ...action.post_data } : a);

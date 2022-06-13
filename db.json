@@ -189,24 +189,6 @@
       "user_id": "asdf",
       "password": "asfd",
       "id": 8
-    },
-    {
-      "title": "무야호",
-      "thumbnail_url": "https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655104674582?alt=media&token=c5891afd-83e0-4e22-afa7-39930c6bc55a",
-      "onair_year": "2000",
-      "content": "ㄱ",
-      "ost_url": "https://www.youtube.com/watch?v=K-mm1yJcl24",
-      "user_id": "user123",
-      "id": 9
-    },
-    {
-      "title": "?? 왜 이러시넨",
-      "thumbnail_url": "https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655104739940?alt=media&token=17e7ec00-4f58-43b9-81cb-5498adc74226",
-      "onair_year": "2000",
-      "content": "",
-      "ost_url": "",
-      "user_id": "user123",
-      "id": 10
     }
   ]
 }
