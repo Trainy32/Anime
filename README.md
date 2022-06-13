@@ -10,11 +10,11 @@
 어린 시절, 학교가 끝나면 TV 앞으로 달려가 챙겨보던 만화영화들을 기억하시나요?<br/>
 추억의 만화영화들을 공유하며 어린 시절 향수를 느껴보아요 :)<br/><br/>
 
-<h2> 프로젝트 기간 </h2>
+<h2>📆 프로젝트 기간 </h2>
 
 2022년 6월 10일 ~ 6월 16일<br/><br/>
 
-<h2> 팀원 소개 </h2>
+<h2>🤗 팀원 소개 </h2>
 
 <code>FrontEnd </code><br/>
 강수현 : 글 작성 & 수정, 메인 리스트 디스플레이 <br/>
@@ -27,12 +27,12 @@
 최봉규: 회원가입, 로그인 관련 API <br/><br/>
 
 
-<h2> 링크 & 시연 영상 </h2>
+<h2> 🎬 링크 & 시연 영상 </h2>
 
 Yet<br/><br/>
 
 
-<h2> 핵심기능 </h2>
+<h2>💻 핵심기능 </h2>
 <li> <b> 로그인 / 회원가입 </b><br/>
 : JWT를 이용한 로그인과 회원가입<br/>
 
@@ -62,7 +62,7 @@ Yet<br/><br/>
  : 게시글에 댓글을 달고 & 수정하고 & 삭제할 수 있습니다.
 <br/>
 <br/>
-<h2> 사용기술 </h2>
+<h2> 🛠️ 사용기술 </h2>
 
 <code>FrontEnd </code><br/>
 <li> React
@@ -76,7 +76,11 @@ Yet<br/><br/>
 <br/>
   
 <code>BackEnd</code><br/>
-<li> 
+<li> Server: AWS EC2 (Ubuntu 18.04 LTS)
+<li> Database: MongoDB
+<li> Runtime Flatform : Node.js
+<li> View : HTML, CSS, Javascript
+<li> Tool : Git, Notion
   
 <br/>
   
