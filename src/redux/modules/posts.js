@@ -22,7 +22,7 @@ export function update_post(post_data) {
 
 
 //미들웨어
-export const load_posts_AX = () => {
+export const load_posts_like_AX = () =>{
   return function (dispatch) {
     axios.get('http://localhost:5001/posts')
       .then(response => dispatch(load_posts(response.data)))
@@ -30,22 +30,28 @@ export const load_posts_AX = () => {
   }
 }
 
+export const load_posts_year_AX = () =>{
+  return function (dispatch) {
+    axios.get('http://localhost:5001/posts')
+    .then(response => dispatch(load_posts(response.data.reverse())))
+  }
+}
+
 export const create_post_AX = (post_data) => {
   return function (dispatch) {
-    console.log('미들웨어접속')
-    // axios.post('http://localhost:5001/user', post_data)
-    //   .then(() => dispatch(create_post(post_data)))
+    axios.post('http://localhost:5001/user', post_data)
+      .then(() => dispatch(create_post(post_data)))
   }
 }
 
 
 export const update_post_AX = (post_id, post_data) => {
-  return function (dispatch) {
-    axios.put('http://localhost:5001/posts/' + post_id, post_data)
-      .then((response) => {
-        console.log(response)
-        dispatch(update_post(post_data))
-      })
+  return function (dispatch) { 
+    axios.patch('http://localhost:5001/posts/'+post_id, post_data)
+    .then((response) => {
+    console.log(response) 
+    dispatch(update_post(post_data))
+  })
   }
 }
 
@@ -62,7 +68,7 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case 'posts/CREATE': {
-      const new_post_list = [...state.posts, action.post_data]
+      const new_post_list = [...state.list, action.post_data]
       return { ...state, list: new_post_list }
     }
 
