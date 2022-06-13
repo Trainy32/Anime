@@ -95,6 +95,7 @@ function Write() {
       .then(response => setSearchResult(response))
   }
 
+  // 검색된 리스트에서 선택 버튼 클릭하면 URL이 입력창에 반영됩니다
   const setOstUrl = (url) => {
     ost_url_ref.current.value = url
   }
