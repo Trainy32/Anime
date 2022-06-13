@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 
-import axios from 'axios'
-
 // 리덕스 관련 Imports
 import {useDispatch, useSelector} from 'react-redux'
 import { load_posts_AX } from '../redux/modules/posts'
@@ -15,6 +13,7 @@ function AnimeList() {
   const dispatch = useDispatch()
   const posts = useSelector((state) => state.posts.list)
 
+  // 리덕스에 포스트 리스트를 로딩해옵니다.
   React.useEffect(() => {
     dispatch(load_posts_AX())
   }, [])
@@ -22,14 +21,14 @@ function AnimeList() {
 
   return (
     <>
-      <div>
+      <ListingOption>
         <button onClick={() => navigate('/write/new')}>(임시) 작성페이지 가기 버튼</button>
-        추천순 / 연도순
-      </div>
+        <span> 추천순 </span> / <span> 연도순 </span>
+      </ListingOption>
 
       <ListWrap>
         {
-          posts.map((p,i) => {return (
+          posts.map((p,i) => { return (
             <Cards key={i}>
               <CardThumb onClick={()=>navigate('/detail/'+p.id)} thumbImg={p.thumbnail_url} />
               <Texts>
@@ -46,9 +45,22 @@ function AnimeList() {
   );
 }
 
+const ListingOption = styled.div`
+margin: 30px;
+font-weight: 600;
+font-size: 26px;
+
+span {
+  cursor:pointer;
+}
+`
+
 const ListWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items:center;
+  justify-content: center;
+  margin-top: 20px;
   width:100%;
 `
 
