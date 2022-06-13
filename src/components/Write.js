@@ -89,25 +89,13 @@ function Write() {
   const [searchResult, setSearchResult] = React.useState(null)
 
   const youtubeSearch = () => {
-    axios.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&type=video&key=AIzaSyD_hQpysmQWmeZ7v_cwKCxVPy1YIOkn9WU&q=' + title_ref.current.value +'ost')
+    axios.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&type=video&key=AIzaSyD_hQpysmQWmeZ7v_cwKCxVPy1YIOkn9WU&q=' + title_ref.current.value + 'ost')
       .then(response => response.data.items)
-      // .then(response => response.map((v, i) => {
-      //   return {
-      //     title: v.snippet.title,
-      //     description: v.snippet.description,
-      //     thumbnails: v.snippet.thumbnails.default.url,
-      //     Url: 'https://www.youtube.com/watch?v=' + v.id.videoId
-      //   } }))
-      .then(response => {
-        console.log(response)
-        setSearchResult(response)
-      })
+      .then(response => setSearchResult(response))
   }
-  
+
   const setOstUrl = (url) => {
-    ost_url_ref.current = url
-    console.log(url)
-    console.log(ost_url_ref.current)
+    ost_url_ref.current.value = url
   }
 
   return (
@@ -117,7 +105,7 @@ function Write() {
       <button onClick={youtubeSearch}>테스트</button>
 
       <InputAreas>
-        <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl} />
+        <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl}> 이미지를 <br /> 선택해주세요 </ImgPreview>
 
         <Right>
           <label>만화제목
@@ -128,7 +116,7 @@ function Write() {
             <input type='number' ref={onair_year_ref}
               defaultValue={thisPost ? thisPost.onair_year : '2000'} /></label>
 
-            <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} />
+          <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} />
 
           <div id="description">
             <label> 만화소개 </label>
@@ -138,29 +126,37 @@ function Write() {
 
           <label>만화 OST
             <input type='url' ref={ost_url_ref}
-              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="직접입력 or 리스트에서 선택" /></label>
+              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="클릭하면 자동 검색 ! (직접 입력도 가능)" 
+              onClick={youtubeSearch}/></label>
 
-            <YoutubeList>
-              { searchResult ? 
-                searchResult.map((v,i) => { return (
+
+          <ListTitle>유튜브에서 찾아보세요! (만화 제목 기준 검색)</ListTitle>
+          <YoutubeList>
+            {searchResult ?
+              searchResult.map((v, i) => {
+                return (
                   <ListItem key={i}>
-                    <VideoThumb video_thumb={v.snippet.thumbnails.default.url}/>
-                    <div>
-                      <h5> { v.snippet.title } </h5>
-                      <p> { v.snippet.description } </p>
-                    </div>
-                    <button onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)}> 선택 </button>
+                    <VideoThumb video_thumb={v.snippet.thumbnails.default.url} />
+                    <VideoText>
+                      <h5> {v.snippet.title} </h5>
+                      {/* <p> { v.snippet.description } </p> */}
+                      <button onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)}> 선택 </button>
+                    </VideoText>
                   </ListItem>
-                  ) })
-                : null
-              }
-            </YoutubeList>
+                )
+              })
+              : <p>검색 결과가 없어요.</p>
+            }
+          </YoutubeList>
 
-          <YoutubeBtn target='blank' href="https://www.youtube.com/">
-            <YoutubeIcon>
-              <BsYoutube />
-            </YoutubeIcon>  유튜브 <br /> 바로가기
-          </YoutubeBtn>
+          <GoToYoutube>
+            <p> 그래도 못 찾으셨다면..?</p>
+            <YoutubeBtn target='blank' href="https://www.youtube.com/">
+              <YoutubeIcon>
+                <BsYoutube />
+              </YoutubeIcon>  유튜브 바로가기
+            </YoutubeBtn>
+          </GoToYoutube>
         </Right>
       </InputAreas>
 
@@ -178,6 +174,7 @@ const InputAreas = styled.div`
   flex-direction: row;
   width: 90%;
   max-width: 900px;
+  text-align: left;
 `
 const Right = styled.div`
   display:flex;
@@ -185,7 +182,7 @@ const Right = styled.div`
   justify-content: flex-start;
   align-items: stretch;
   margin-left: 5%;
-  width: 50%;
+  width: 60%;
 
   input {
     height: 30px;
@@ -219,30 +216,83 @@ const Right = styled.div`
 `
 
 const ImgPreview = styled.label`
-background-color: #ddd;
-background: ${(props) => props.imgUrl ? 'url(' + props.imgUrl + ')' : '#ddd'};
-background-size: cover;
-height: 400px;
-width: 50%;
-max-width:300px;
-cursor: pointer;
+  background-color: #ddd;
+  background: ${(props) => props.imgUrl ? 'url(' + props.imgUrl + ')' : '#ddd'};
+  background-size: cover;
+  height: 400px;
+  width: 50%;
+  max-width:300px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align:center;
+  line-height: 200%;
+  font-size: 24px;
+  color: ${(props) => props.imgUrl ? 'transparent' : '#999'};
+
+
+  cursor: pointer;
+`
+
+
+const ListTitle = styled.div`
+  width:100%;
+  margin: 10px 10px -1px 10px;
+  padding: 0px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px;
+  background-color: #ddd;
 `
 
 const YoutubeList = styled.div`
-display: flex;
-flex-direction: column;
-border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 150px;
+  box-sizing: border-box;
+  overflow: auto;
+  width:100%;
+  margin: 0px 0px 10px 10px ;
+
+  p {
+    margin : 0px;
+    color: #999;
+  }
 `
 
 const ListItem = styled.div`
-display: flex;
+  display: flex;
+  margin-bottom: 10px;
 `
 
 const VideoThumb = styled.div`
-height: 70px;
-width: 120px;
-background: url(${(props) => props.video_thumb}) center;
-background-size: cover;
+  height: 70px;
+  width: 100px;
+  min-width: 100px;
+  background: url(${(props) => props.video_thumb}) center;
+  background-size: cover;
+`
+
+const VideoText = styled.div`
+  margin: 0px 10px;
+  text-align: left;
+  font-size: 10px;
+`
+
+const GoToYoutube = styled.div`
+  display:flex;
+  align-items: center;
+
+  p {
+    margin : 0px 10px;
+    color: #999;
+    font-size: 14px;
+  }
 `
 
 const YoutubeBtn = styled.a`
@@ -251,31 +301,32 @@ const YoutubeBtn = styled.a`
   align-items: center;
   text-align: center;
   text-decoration: none;
-  border: 1px solid #000;
+  border: 1px solid #999;
   border-radius: 10px;
-  margin-left: 10%;
-  width: 140px;
+  margin-left: 10px;
+  width: 130px;
   padding : 0px 10px;
-  height: 50px;
+  height: 30px;
+  font-size: 12px;
 
   &:visited{
-    color: #000;
+    color: #999;
 }
 `
 
 const YoutubeIcon = styled.span`
-  font-size: 50px;
-  margin: 0px 20px 0px 0px;
+  font-size: 30px;
+  margin: 0px 10px 3px 0px;
   padding: 0px;
   padding-top: 10px;
   color: red;
 `
 
-const Button = styled.button `
-    height: 50px;
-    width: 80%;
-    max-width: 800px;
-    margin-top: 20px;
+const Button = styled.button`
+  height: 50px;
+  width: 80%;
+  max-width: 800px;
+  margin-top: 20px;
 `
 
 export default Write;
