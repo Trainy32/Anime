@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {useParams, useNavigate} from 'react-router-dom';
 // 리덕스 관련
 import {useDispatch, useSelector} from 'react-redux'
-import { createCommentAX } from '../redux/modules/comments'
+import { createCommentAX, loadCommentAX } from '../redux/modules/comments'
 // 영상보여주기
 import ReactPlayer from 'react-player';
 //스크롤 관련
@@ -30,6 +30,12 @@ const Detail = () => {
                 
              });
             },[]);
+    //댓글 데이터 가져오기
+        const comments =useSelector((state)=>state.comments.comments)
+        console.log(comments);
+        React.useEffect(()=>{
+            dispatch(loadCommentAX())
+        },[])
     //댓글 입력창 정보 받아오기
         const comment_ref = useRef(null);
     //댓글 등록시 실행되는 함수
@@ -40,7 +46,7 @@ const Detail = () => {
         }
         dispatch(createCommentAX(new_commnet))
     }
-
+    
     return (
         <Container>
             <ScrollRestore/>
@@ -64,10 +70,25 @@ const Detail = () => {
             <div>만화주제가(동영상)
             <ReactPlayer url={posts?.ost_url}></ReactPlayer>
             </div>
-            <div>댓글 작성하기
+            <div >
+            댓글 작성하기
                 <input type='text' ref={comment_ref}></input>
                 <button onClick={addComment}>등록하기</button>
-            </div>
+
+    {/* 맵함수 이용해서 댓글뿌려주기 */}
+            {
+                comments.map((c,i)=>{
+                    console.log(c)
+                    return(
+                <div key={i}>
+                    <h4>{c.nickname}</h4>
+                    <h4>{c.comment}</h4>
+                    <h5>{c.created_at}</h5>
+                </div>
+                    )
+                })
+            }
+             </div>
 
         </Container>
     )
