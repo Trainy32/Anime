@@ -9,6 +9,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import { load_posts_AX } from '../redux/modules/posts'
 // 영상보여주기
 import ReactPlayer from 'react-player';
+//스크롤 관련
+import ScrollRestore from "./ScrollRestore";
 
 const Detail = () => {
 
@@ -31,6 +33,7 @@ const Detail = () => {
 
     return (
         <Container>
+            <ScrollRestore/>
         <Div>
             
             <Img src={posts?.thumbnail_url}></Img>
