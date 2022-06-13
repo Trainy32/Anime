@@ -27,7 +27,6 @@ const Detail = () => {
                 
              });
             },[]);
-            console.log(posts);
 
 
     return (

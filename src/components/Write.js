@@ -68,6 +68,7 @@ function Write() {
       user_id: "user123",
     }
     dispatch(create_post_AX(new_post))
+    navigate('/')
   }
 
 
@@ -81,15 +82,41 @@ function Write() {
       ost_url: ost_url_ref.current.value,
     }
     dispatch(update_post_AX(thisPost.id, new_post))
+    navigate('/')
   }
 
+  // 유튜브 검색 리스트 받아오기
+  const [searchResult, setSearchResult] = React.useState(null)
+
+  const youtubeSearch = () => {
+    axios.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&type=video&key=AIzaSyD_hQpysmQWmeZ7v_cwKCxVPy1YIOkn9WU&q=' + title_ref.current.value +'ost')
+      .then(response => response.data.items)
+      // .then(response => response.map((v, i) => {
+      //   return {
+      //     title: v.snippet.title,
+      //     description: v.snippet.description,
+      //     thumbnails: v.snippet.thumbnails.default.url,
+      //     Url: 'https://www.youtube.com/watch?v=' + v.id.videoId
+      //   } }))
+      .then(response => {
+        console.log(response)
+        setSearchResult(response)
+      })
+  }
+  
+  const setOstUrl = (url) => {
+    ost_url_ref.current = url
+    console.log(url)
+    console.log(ost_url_ref.current)
+  }
 
   return (
-    <FormWrap>
+    <div>
 
       <button onClick={() => navigate('/')}>임시버튼 : 리스트 가기</button>
+      <button onClick={youtubeSearch}>테스트</button>
 
-      <Top>
+      <InputAreas>
         <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl} />
 
         <Right>
@@ -101,12 +128,33 @@ function Write() {
             <input type='number' ref={onair_year_ref}
               defaultValue={thisPost ? thisPost.onair_year : '2000'} /></label>
 
-          <label>만화이미지
-            <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} /></label>
+            <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} />
+
+          <div id="description">
+            <label> 만화소개 </label>
+            <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
+              defaultValue={thisPost ? thisPost.content : ''} />
+          </div>
 
           <label>만화 OST
             <input type='url' ref={ost_url_ref}
-              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="주제가 링크를 넣어주세요 (필수 x)" /></label>
+              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="직접입력 or 리스트에서 선택" /></label>
+
+            <YoutubeList>
+              { searchResult ? 
+                searchResult.map((v,i) => { return (
+                  <ListItem key={i}>
+                    <VideoThumb video_thumb={v.snippet.thumbnails.default.url}/>
+                    <div>
+                      <h5> { v.snippet.title } </h5>
+                      <p> { v.snippet.description } </p>
+                    </div>
+                    <button onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)}> 선택 </button>
+                  </ListItem>
+                  ) })
+                : null
+              }
+            </YoutubeList>
 
           <YoutubeBtn target='blank' href="https://www.youtube.com/">
             <YoutubeIcon>
@@ -114,24 +162,30 @@ function Write() {
             </YoutubeIcon>  유튜브 <br /> 바로가기
           </YoutubeBtn>
         </Right>
-      </Top>
-      <label>만화소개</label> <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
-        defaultValue={thisPost ? thisPost.content : ''} />
+      </InputAreas>
 
       {isNew ?
-        <button onClick={writePost}> 등록하기 </button>
-        : <button onClick={EditPost}> 수정하기 </button>
+        <Button onClick={writePost}> 등록하기 </Button>
+        : <Button onClick={EditPost}> 수정하기 </Button>
       }
-    </FormWrap>
+    </div>
   )
 }
 
-const FormWrap = styled.div`
-  margin: 120px auto;
+const InputAreas = styled.div`
+  margin: 120px auto 20px auto;
   display:flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 90%;
   max-width: 900px;
+`
+const Right = styled.div`
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin-left: 5%;
+  width: 50%;
 
   input {
     height: 30px;
@@ -139,25 +193,29 @@ const FormWrap = styled.div`
     margin: 10px;
   }
 
-  button {
-    height: 50px;
-    margin-top: 20px;
+  input[type='file'] {
+    width: 0px;
+    height:0px;
+    margin: -1px;
+    padding: 0px;
+    overflow:hidden;
+  }
+
+  label {
+    text-align: left
+  }
+
+  #description {
+    margin: 10px 0px;
+    display:flex;
+    text-align: left;
+    gap: 10px;
   }
 
   textarea {
-    height: 100px;
+    height: 80px;
+    width: 70%;
   }
-`
-
-const Top = styled.div`
-display:flex;
-flex-direction: row;
-`
-const Right = styled.div`
-  display:flex;
-  flex-direction: column;
-  margin-left: 5%;
-  width: 50%;
 `
 
 const ImgPreview = styled.label`
@@ -168,6 +226,23 @@ height: 400px;
 width: 50%;
 max-width:300px;
 cursor: pointer;
+`
+
+const YoutubeList = styled.div`
+display: flex;
+flex-direction: column;
+border: 1px solid #ddd;
+`
+
+const ListItem = styled.div`
+display: flex;
+`
+
+const VideoThumb = styled.div`
+height: 70px;
+width: 120px;
+background: url(${(props) => props.video_thumb}) center;
+background-size: cover;
 `
 
 const YoutubeBtn = styled.a`
@@ -194,6 +269,13 @@ const YoutubeIcon = styled.span`
   padding: 0px;
   padding-top: 10px;
   color: red;
+`
+
+const Button = styled.button `
+    height: 50px;
+    width: 80%;
+    max-width: 800px;
+    margin-top: 20px;
 `
 
 export default Write;
