@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useRef} from "react";
 import axios from 'axios';
 // CSS 관련 Imports
 import styled from 'styled-components'
@@ -6,13 +6,14 @@ import styled from 'styled-components'
 import {useParams, useNavigate} from 'react-router-dom';
 // 리덕스 관련
 import {useDispatch, useSelector} from 'react-redux'
-import { load_posts_AX } from '../redux/modules/posts'
+import { createCommentAX } from '../redux/modules/comments'
 // 영상보여주기
 import ReactPlayer from 'react-player';
 //스크롤 관련
 import ScrollRestore from "./ScrollRestore";
 
 const Detail = () => {
+    const dispatch = useDispatch();
 
     //페이지 인덱스값 받아오기
     const params = useParams();
@@ -29,7 +30,16 @@ const Detail = () => {
                 
              });
             },[]);
-
+    //댓글 입력창 정보 받아오기
+        const comment_ref = useRef(null);
+    //댓글 등록시 실행되는 함수
+    const addComment= () => {
+        const new_commnet ={
+            comment: comment_ref.current.value,
+            nickname : "김상선",
+        }
+        dispatch(createCommentAX(new_commnet))
+    }
 
     return (
         <Container>
@@ -54,9 +64,9 @@ const Detail = () => {
             <div>만화주제가(동영상)
             <ReactPlayer url={posts?.ost_url}></ReactPlayer>
             </div>
-            <div>댓글
-                <input></input>
-                <div>댓글내용</div>
+            <div>댓글 작성하기
+                <input type='text' ref={comment_ref}></input>
+                <button onClick={addComment}>등록하기</button>
             </div>
 
         </Container>
