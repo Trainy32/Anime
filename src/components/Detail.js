@@ -18,8 +18,8 @@ const Detail = () => {
    
     //데이터 가져오기
     const[posts, setPosts]= useState([]);
-    React.useEffect((post_id)=>{
-         axios.get(`http://localhost:5001/posts?${post_id}`
+    React.useEffect(()=>{
+         axios.get(`http://localhost:5001/posts/${id}`
           
          )
          .then(response => {
@@ -33,11 +33,11 @@ const Detail = () => {
         <Container>
         <Div>
             
-            <Img src={posts[id]?.thumbnail_url}></Img>
+            <Img src={posts?.thumbnail_url}></Img>
             <div>
-            <p>작성자명:{posts[id]?.user_id}</p>
-            <h3>만화제목:{posts[id]?.title}</h3>
-            <h3>방영연도:{posts[id]?.onair_year}</h3>
+            <p>작성자명:{posts?.user_id}</p>
+            <h3>만화제목:{posts?.title}</h3>
+            <h3>방영연도:{posts?.onair_year}</h3>
         
             </div>
             
@@ -46,10 +46,10 @@ const Detail = () => {
         
         <div>
             <h3>소개글</h3>
-            <p>{posts[id]?.content}</p>    
+            <p>{posts?.content}</p>    
         </div>
             <div>만화주제가(동영상)
-            <ReactPlayer url={posts[id]?.ost_url}></ReactPlayer>
+            <ReactPlayer url={posts?.ost_url}></ReactPlayer>
             </div>
             <div>댓글
                 <input></input>
