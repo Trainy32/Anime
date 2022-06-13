@@ -13,16 +13,12 @@
       "likes": 12
     },
     {
-      "id": 1,
-      "post_id": 2,
-      "created_at": "2022-06-10T10:56:20.960Z",
       "title": "짱구는 못말려",
       "thumbnail_url": "https://movie-phinf.pstatic.net/20111223_270/13245912099492UR7d_JPEG/movie_image.jpg",
-      "onair_year": 1998,
-      "content": "재미있는 만화였어요!",
+      "onair_year": "2000",
+      "content": "재미있는 만화였어요! 천방지축 얼렁뚱땅!",
       "ost_url": "https://www.youtube.com/watch?v=XHMdIA6bEOE",
-      "user_id": "user123",
-      "likes": 15
+      "id": 1
     },
     {
       "id": 2,
@@ -47,6 +43,15 @@
       "ost_url": "https://www.youtube.com/watch?v=e6zp5Qob9ko",
       "user_id": "user123",
       "likes": 12
+    },
+    {
+      "title": "꼬마자동차 붕붕",
+      "thumbnail_url": "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTEyMjVfMTIz%2FMDAxNTc3MjYzOTE4NTc2.Sytc6XxNXoTK_zrH8AA7ttCitH7nNriGbZQkzZlyDmIg.ft3nou56siCsMQSAyAGtXO6NJ5yuf7ePQDLDKd-39pAg.PNG%2F2019-12-25_17%253B51%253B38_.png&type=sc960_832",
+      "onair_year": "1985",
+      "content": "붕붕붕~~ ",
+      "ost_url": "https://www.youtube.com/watch?v=1VDMpDz1HfY",
+      "user_id": "user123",
+      "id": 4
     }
   ],
   "comment": [
@@ -116,6 +121,19 @@
       "user_id": "aasdf@asdf.com",
       "password": "asdf123",
       "id": 6
+    },
+    {
+      "user_id": "asf",
+      "profile_img": 3,
+      "nickname": "asdf",
+      "password": "asef",
+      "confirm_password": "asf",
+      "id": 7
+    },
+    {
+      "user_id": "asdf",
+      "password": "asfd",
+      "id": 8
     }
   ]
 }

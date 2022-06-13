@@ -1,11 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import axios from 'axios'
 
 import { useNavigate, useParams } from 'react-router-dom'
 
 // 리덕스 관련 Imports
-import { useDispatch, useSelector } from 'react-redux'
-import { create_post_AX } from '../redux/modules/posts'
+import { useDispatch } from 'react-redux'
+import { create_post_AX, update_post_AX } from '../redux/modules/posts'
+
+// 이미지 저장 DB
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { storage } from '../firebase'
 
 // CSS 관련 Imports
 import styled from 'styled-components'
@@ -21,17 +25,18 @@ function Write() {
   const isNew = params.post_id === 'new' ? true : false
 
 
-  // 새로 쓰는 데이터라면 : 현재 포스트의 데이터를 불러오고, 로딩 완료여부를 체크합니다.
+  // 수정이라면 : 현재 포스트의 데이터를 불러와 state로 저장합니다
   const [thisPost, setThisPost] = React.useState(null)
-  const [isLoaded, setIsLoaded] = React.useState(false)
 
   React.useEffect(() => {
     if (!isNew) {
       axios.get('http://localhost:5001/posts?id=' + params.post_id)
-        .then(response => setThisPost(...response.data))
-        .then(setIsLoaded(true))
+
+        .then(response => {
+          setThisPost(...response.data)
+          setImgUrl(response.data[0].thumbnail_url)
+        })
     }
-    console.log(thisPost)
   }, [])
 
   // 입력창 정보 받아오기
@@ -41,11 +46,23 @@ function Write() {
   const ost_url_ref = useRef(null);
   const content_ref = useRef(null);
 
+
+  // 이미지 파이어베이스 DB에 업로드 & url을 state에 imgUrl 이름으로 저장
+  const [imgUrl, setImgUrl] = React.useState(null)
+
+  const uploadImg = async (e) => {
+    const file_path = 'animeImg/' + new Date().getTime()
+    const uploaded_file = await uploadBytes(ref(storage, file_path), e.target.files[0])
+    const file_url = await getDownloadURL(uploaded_file.ref)
+    thumbnail_ref.current = { url: file_url }
+    setImgUrl(thumbnail_ref.current.url)
+  }
+
   // 작성하기 버튼 눌렀을때 :)
   const writePost = () => {
     const new_post = {
       title: title_ref.current.value,
-      thumbnail_url: "https://movie-phinf.pstatic.net/20160314_26/1457920153891qdBTB_JPEG/movie_image.jpg",
+      thumbnail_url: imgUrl,
       onair_year: onair_year_ref.current.value,
       content: content_ref.current.value,
       ost_url: ost_url_ref.current.value,
@@ -54,58 +71,101 @@ function Write() {
     dispatch(create_post_AX(new_post))
   }
 
+
+  // 수정하기 버튼 눌렀을 때
+  const EditPost = () => {
+    const new_post = {
+      title: title_ref.current.value,
+      thumbnail_url: imgUrl,
+      onair_year: onair_year_ref.current.value,
+      content: content_ref.current.value,
+      ost_url: ost_url_ref.current.value,
+    }
+    dispatch(update_post_AX(thisPost.id, new_post))
+  }
+
+
   return (
     <FormWrap>
       <button onClick={() => navigate('/')}>임시버튼 : 리스트 가기</button>
 
-      <label>만화제목
-        <input type='text' ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
-          defaultValue={isLoaded ? '로딩됐어' : '아직아니야'} /></label>
+      <Top>
+        <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl} />
 
-      <label>방영연도
-        <input type='number' ref={onair_year_ref}
-          defaultValue='2000' /></label>
+        <Right>
+          <label>만화제목
+            <input type='text' ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
+              defaultValue={thisPost ? thisPost.title : ''} /></label>
 
-      <label>만화이미지
-        <input type='file' id="post_thumb" ref={thumbnail_ref}
-          defaultValue='' /></label> <ImgPreview htmlFor="post_thumb" />
+          <label>방영연도
+            <input type='number' ref={onair_year_ref}
+              defaultValue={thisPost ? thisPost.onair_year : '2000'} /></label>
 
-      <label>만화 OST
-        <input type='url' ref={ost_url_ref}
-          defaultValue='' placeholder="추억의 주제가 링크를 넣어주시겠어요? (필수 x)" /></label>
+          <label>만화이미지
+            <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} /></label>
+          <label>만화 OST
+            <input type='url' ref={ost_url_ref}
+              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="주제가 링크를 넣어주세요 (필수 x)" /></label>
 
-      <YoutubeBtn target='blank' href="https://www.youtube.com/">
-        <YoutubeIcon>
-          <BsYoutube />
-        </YoutubeIcon>  유튜브 <br /> 바로가기
-      </YoutubeBtn>
-
+          <YoutubeBtn target='blank' href="https://www.youtube.com/">
+            <YoutubeIcon>
+              <BsYoutube />
+            </YoutubeIcon>  유튜브 <br /> 바로가기
+          </YoutubeBtn>
+        </Right>
+      </Top>
       <label>만화소개</label> <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
-        defaultValue='' />
-
-      <button onClick={writePost}> 등록하기 </button>
-
+        defaultValue={thisPost ? thisPost.content : ''} />
+      {isNew ?
+        <button onClick={writePost}> 등록하기 </button>
+        : <button onClick={EditPost}> 수정하기 </button>
+      }
     </FormWrap>
-  );
+  )
 }
 
 const FormWrap = styled.div`
   margin: 120px auto;
   display:flex;
   flex-direction: column;
-  width: 60%;
-  gap: 20px;
+  width: 90%;
+  max-width: 900px;
 
   input {
     height: 30px;
-    width: 400px;
+    width: 70%;
+    margin: 10px;
+  }
+
+  button {
+    height: 50px;
+    margin-top: 20px;
+  }
+
+  textarea {
+    height: 100px;
   }
 `
+
+const Top = styled.div`
+display:flex;
+flex-direction: row;
+`
+const Right = styled.div`
+  display:flex;
+  flex-direction: column;
+  margin-left: 5%;
+  width: 50%;
+`
+
 const ImgPreview = styled.label`
-background: #ddd;
+background-color: #ddd;
+background: ${(props) => props.imgUrl ? 'url(' + props.imgUrl + ')' : '#ddd'};
 background-size: cover;
-height: 80px;
-width: 60px;
+height: 400px;
+width: 50%;
+max-width:300px;
+cursor: pointer;
 `
 
 const YoutubeBtn = styled.a`
@@ -116,7 +176,7 @@ const YoutubeBtn = styled.a`
   text-decoration: none;
   border: 1px solid #000;
   border-radius: 10px;
-  margin-left: 70px;
+  margin-left: 10%;
   width: 140px;
   padding : 0px 10px;
   height: 50px;
