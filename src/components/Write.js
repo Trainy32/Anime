@@ -31,7 +31,6 @@ function Write() {
   React.useEffect(() => {
     if (!isNew) {
       axios.get('http://localhost:5001/posts?id=' + params.post_id)
-
         .then(response => {
           setThisPost(...response.data)
           setImgUrl(response.data[0].thumbnail_url)
@@ -146,7 +145,7 @@ function Write() {
                   </ListItem>
                 )
               })
-              : <p>검색 결과가 없어요.</p>
+              : <p>검색 결과가 없어요. <br/> (만화 제목 입력 후 OST 입력창 클릭!)</p>
             }
           </YoutubeList>
 
@@ -263,6 +262,7 @@ const YoutubeList = styled.div`
 
   p {
     margin : 0px;
+    line-height: 200%;
     color: #999;
   }
 `

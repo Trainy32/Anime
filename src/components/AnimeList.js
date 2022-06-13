@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 // 리덕스 관련 Imports
 
@@ -32,11 +33,17 @@ function AnimeList() {
     setListOrder('year')
   } 
 
+  const test = () => {
+    axios.get('http://54.180.121.151/')
+    .then(response => console.log(response.data))
+  }
+
 
   return (
     <>
       <ListingOption>
         <button onClick={() => navigate('/write/new')}>(임시) 작성페이지 가기 버튼</button>
+        <button onClick={test}>TEST</button>
         <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> / 
         <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
       </ListingOption>
