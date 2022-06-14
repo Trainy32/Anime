@@ -31,10 +31,15 @@ function Write() {
   React.useEffect(() => {
     if (!isNew) {
       axios.get('http://localhost:5001/posts?id=' + params.post_id)
-        .then(response => {
-          setThisPost(...response.data)
-          setImgUrl(response.data[0].thumbnail_url)
-        })
+      .then(response => {
+        setThisPost(...response.data)
+        setImgUrl(response.data[0].thumbnail_url)
+      })
+      // axios.get('http://54.180.121.151/api/post/detail/' + params.post_id)
+      //   .then(response => {
+      //     setThisPost(response.data)
+      //     setImgUrl(response.data.thumbnail_url)
+      //   })
     }
   }, [])
 
