@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
 // 리덕스 관련 Imports
 
@@ -9,6 +8,10 @@ import { load_posts_like_AX, load_posts_year_AX } from '../redux/modules/posts'
 
 // CSS 관련 Imports
 import styled from 'styled-components'
+
+// 스크롤
+import { FixedSizeGrid as Grid } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 function AnimeList() {
   const navigate = useNavigate()
@@ -33,40 +36,69 @@ function AnimeList() {
     setListOrder('year')
   } 
 
+// 리스트 아이템 만들기 : 윈도잉용으로 인덱싱하는 함수 
+  const makeItem = useCallback ((data) => {
+    const item = data.data[0]
+    const rowLength = data.data[1]
+    const columnIndex = data.columnIndex
+    const rowIndex = data.rowIndex
+    const style = data.style
+
+    const itemIndex = columnIndex + (rowIndex*rowLength)
+    
+    // console.log('데이터 :: ', data)
+    // console.log('item :: ', item)
+    // console.log('rowLength :: ', rowLength)
+    // console.log('columnIndex :: ', columnIndex)
+    // console.log('rowIndex :: ', rowIndex)
+
+    return itemIndex < item.length ? (
+        <div style={style}>
+          <Cards>
+          <CardThumb onClick={() => navigate('/detail/' + item[itemIndex].post_id)} thumbImg={item[itemIndex].thumbnail_url} />
+          <Texts>
+            <h5>{item[itemIndex].onair_year}~</h5>
+            <h3>{item[itemIndex].title}</h3>
+            <span>❤️ {item[itemIndex].likes} </span>
+            <button onClick={() => navigate('/write/' + item[itemIndex].post_id)}>(임시) 수정</button>
+          </Texts>
+          </Cards>
+        </div>
+      ) : (null)
+  })
 
   return (
     <>
       <ListingOption>
-        <button onClick={() => navigate('/write/new')}>(임시) 작성페이지 가기 버튼</button>
         <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> / 
         <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
       </ListingOption>
 
       <ListWrap>
-        {
-          posts.map((p, i) => {
-            return (
-              <Cards key={i}>
-                <CardThumb onClick={() => navigate('/detail/' + p.id)} thumbImg={p.thumbnail_url} />
-                <Texts>
-                  <h5>{p.onair_year}~</h5>
-                  <h3>{p.title}</h3>
-                  <span>❤️ {p.likes} </span>
-                  <button onClick={() => navigate('/write/' + p.post_id)}>(임시) 수정</button>
-                </Texts>
-              </Cards>
-            )
-          })
-        }
+        <AutoSizer>
+          {({ height, width }) => (
+            <Grid
+              columnCount={Math.floor(width/300)}
+              columnWidth={320}
+              height={height}
+              rowCount={Math.ceil(posts.length/(width/300))}
+              rowHeight={490}
+              width={width}
+              itemData={[posts, Math.floor(width/300)]}
+            >
+              {makeItem}
+            </Grid>
+          )}
+        </AutoSizer>
       </ListWrap>
     </>
   );
 }
 
 const ListingOption = styled.div`
-margin: 30px;
+margin: 20px;
 font-weight: 600;
-font-size: 26px;
+font-size: 20px;
 
 span {
   cursor:pointer;
@@ -81,12 +113,9 @@ const OrderByYear = styled.span`
 
 
 const ListWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items:center;
-  justify-content: center;
-  margin: 20px auto;
-  width:80%;
+width: 90vw;
+height: 70vh;
+margin: 0px 10vw;
 `
 
 const Cards = styled.div`
