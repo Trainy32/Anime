@@ -1,47 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios';
+import instance from "../shared/Request"
+import { LoginDB } from "../redux/modules/user";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // 로그인 정보 가져오기
-  const email_ref = React.useRef(null);
-  const pw_ref = React.useRef(null);
-
+  const [email, setEmail] = React.useState('');
+  const [pw, setPw] = React.useState('');
 
   // 로그인 버튼 클릭시
   const login = (e) => {
     e.preventDefault();
 
     const login_info = {
-      user_id: email_ref.current.value,
-      password: pw_ref.current.value,
+      user_id: email,
+      password: pw,
     }
 
-    axios.post('http://localhost:5001/user', login_info)
-      .then((response) => { alert(response) })
-      .catch((error) => console.log(error));
+    // 빈 항목 체크
+    if (email === "" || pw === "") {
+      window.alert("아이디 혹은 비밀번호가 입력되지 않았습니다.")
+      return;
+    }
+    dispatch(LoginDB(login_info));
+    navigate("/");
   }
 
 
 
 
 
+  // console.log(loginCheck)
+
+  // axios.get('http://54.180.121.151/api/user/me', {
+  //   headers: {
+  //     authorization: 'Bearer ' + user_token //the token is a variable which holds the token
+  //   }
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch(err => {
+  //       // 요청이 정상적으로 끝나지 않았을 때(오류 났을 때) 수행할 작업!
+  //       console.log("에러 났어!");
+  //     })
+  // })
+
+
+
   const user_list = useSelector((state) => state.user.list)
-  console.log(user_list)
   return (
     <LoginWrap>
       <Title>로그인</Title>
       <Form>
         <label htmlFor="user_email">
           <p>이메일</p>
-          <input type="text" id="user_id" ref={email_ref} placeholder="아이디를 입력해주세요." />
+          <input type="text" id="user_id" placeholder="아이디를 입력해주세요." onChange={(e) => { setEmail(e.target.value); }} />
         </label>
         <label htmlFor="user_pw">
           <p>비밀번호</p>
-          <input type="password" id="user_pw" ref={pw_ref} placeholder="비밀번호를 입력해주세요." />
+          <input type="password" id="user_pw" placeholder="비밀번호를 입력해주세요." onChange={(e) => { setPw(e.target.value); }} />
         </label>
         <InputBtn to='/' onClick={login}>로그인하기</InputBtn>
       </Form>

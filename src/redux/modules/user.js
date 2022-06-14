@@ -1,9 +1,12 @@
 import axios from 'axios'
+import instance from '../../shared/Request'
+
 
 
 // 액션
 // const LOAD = 'user/LOAD'
 const CREATE = 'user/CREATE'
+const SET_USER = 'user/SET_USER'
 // const UPDATE = 'user/UPDATE'
 
 
@@ -14,6 +17,10 @@ const CREATE = 'user/CREATE'
 
 export function add_user(post_info) {
   return { type: CREATE, post_info }
+}
+
+export function set_user(user_info) {
+  return { type: SET_USER, user_info }
 }
 
 // export function update_post(post_data) {
@@ -39,36 +46,49 @@ export function add_user(post_info) {
 // 회원정보 저장
 export const add_user_AX = (post_info) => {
   return function (dispatch) {
-    axios.post('http://localhost:5001/user', post_info)
+    axios.post('http://54.180.121.151/api/user/signup', post_info)
       .then((response) => {
+        console.log(response);
         dispatch(add_user(post_info))
       })
       // 응답 메세지(회원가입 완료 or 닉네임 또는 패스워드를 확인하세요) 추가 예정
-      // .catch(function (error) { console.log("에러", error.response.data); })
+      .catch((error) => console.log(error));
+  }
+}
+
+// 로그인 요청 확인
+export const LoginDB = (login_info) => {
+  return function (dispatch) {
+    axios.post('http://54.180.121.151/api/user/login', login_info)
+      .then((response) => {
+        localStorage.setItem("user_token", response.data.token);
+
+      })
+      .catch((error) => console.log(error));
+  }
+}
+
+// 현재 유저 정보 확인
+export const loginCheckDB = () => {
+  return function (dispatch) {
+    instance.get('/api/user/me')
+      .then((response) => {
+        // dispatch(set_user({
+        //   nickname: response.data.user.nickname,
+        //   profile_img: response.data.user.profile_img,
+        //   user_id: response.data.user.user_id,
+        //   // is_login: true,
+        // }))
+        console.log(response.data.user.nickname)
+      })
       .catch((error) => console.log(error));
   }
 }
 
 
-
-// export const update_post_AX = (post_data) => {
-//   return function (dispatch) {
-//     axios.put('http://localhost:5001/posts', post_data)
-//       .then(() => dispatch(update_post(post_data)))
-//   }
-// }
-
-
 // 초기값
 const initialState = {
-  list: [{
-    user_id: "test3@naver.com",
-    profile_img: 3,
-    nickname: "test3",
-    password: "123",
-    confirm_password: "123",
-    id: 3,
-  }],
+  list: [],
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -78,9 +98,15 @@ export default function reducer(state = initialState, action = {}) {
     // }
 
     case 'user/CREATE': {
-      console.log(state.list)
       const new_user_list = [...state.list, action.post_info]
       return { list: new_user_list };
+    }
+
+
+    case 'user/SET_USER': {
+      // // console.log(action.user_info)
+      // const user_info = [action.user_info]
+      // return { user_info: user_info };
     }
 
 

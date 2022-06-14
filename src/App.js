@@ -21,13 +21,36 @@ import Detail from "./components/Detail";
 import Header_home from "./components/Header_home";
 import Header_nav from "./components/Header_nav";
 
+import { loginCheckDB } from "./redux/modules/user";
+
+
 
 
 function App() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  const is_login = localStorage.getItem("user_token") ? true : false;
+
+  React.useEffect(() => {
+    if (is_login) {
+      dispatch(loginCheckDB());
+    }
+    // else {
+    //   navigate("/login");
+    // }
+  }, [])
+
+  // const is_login = useSelector(state => state.user.user_info[0].is_login);
+  // 로그인 완료 -> 메인 페이지 (콘솔:false) -> 새로고침(콘솔:true)
+  // 문제 해결 예정!
+  console.log(is_login)
+
   return (
     <div className="App">
       {/* if문 사용해서 Header_home, Header_nav 보여주기 */}
-      <Header_nav />
+      <Header_home />
       <Routes>
         <Route path='/' element={<AnimeList />} />
         <Route path='/write/:post_id' element={<Write />} />
