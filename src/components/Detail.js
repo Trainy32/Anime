@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {useParams, useNavigate} from 'react-router-dom';
 // 리덕스 관련
 import {useDispatch, useSelector} from 'react-redux'
-import { createCommentAX, loadCommentAX } from '../redux/modules/comments'
+import { createCommentAX, loadCommentAX, deleteCommentAX } from '../redux/modules/comments'
 // 영상보여주기
 import ReactPlayer from 'react-player';
 //스크롤 관련
@@ -32,7 +32,7 @@ const Detail = () => {
             },[]);
     //댓글 데이터 가져오기
         const comments =useSelector((state)=>state.comments.comments)
-        console.log(comments);
+        // console.log(comments);
         React.useEffect(()=>{
             dispatch(loadCommentAX())
         },[])
@@ -43,9 +43,14 @@ const Detail = () => {
         const new_commnet ={
             comment: comment_ref.current.value,
             nickname : "김상선",
+            created_at: "2020-04-10T20:02:20.686"
         }
         dispatch(createCommentAX(new_commnet))
     }
+    // 댓글 삭제하기
+    // const delComment=()=>{
+    //     dispatch(deleteCommentAX())
+    // }
     
     return (
         <Container>
@@ -78,12 +83,13 @@ const Detail = () => {
     {/* 맵함수 이용해서 댓글뿌려주기 */}
             {
                 comments.map((c,i)=>{
-                    console.log(c)
                     return(
                 <div key={i}>
                     <h4>{c.nickname}</h4>
                     <h4>{c.comment}</h4>
                     <h5>{c.created_at}</h5>
+                    <button onClick={()=>{ dispatch(deleteCommentAX(c.id))}}>삭제하기</button>
+                    <button>수정하기</button>
                 </div>
                     )
                 })

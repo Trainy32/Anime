@@ -111,13 +111,6 @@
   ],
   "comments": [
     {
-      "id": 0,
-      "comment_id": 1,
-      "nickname": "김상선",
-      "comment": "재밌었어요",
-      "created_at": "2020-04-09T19:12:30.686"
-    },
-    {
       "id": 1,
       "comment_id": 2,
       "nickname": "정예빈",
@@ -131,7 +124,6 @@
       "comment": "저도 별로",
       "created_at": "2020-04-10T20:02:20.686"
     }
-  
   ],
   "user": [
     {
