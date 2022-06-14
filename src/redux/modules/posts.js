@@ -23,7 +23,7 @@ export function update_post(post_data) {
 // http://54.180.121.151/api
 
 //미들웨어
-export const load_posts_like_AX = () =>{
+export const load_posts_like_AX = () => {
   return function (dispatch) {
     // axios.get('http://localhost:5001/posts')
     // .then(response => dispatch(load_posts(response.data)))
@@ -32,7 +32,7 @@ export const load_posts_like_AX = () =>{
   }
 }
 
-export const load_posts_year_AX = () =>{
+export const load_posts_year_AX = () => {
   return function (dispatch) {
     // axios.get('http://localhost:5001/posts/')
     // .then(response => dispatch(load_posts(response.data.reverse())))
@@ -74,14 +74,14 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'posts/LOAD': {
-      return { is_loaded : true, list: action.post_list }
+      return { is_loaded: true, list: action.post_list }
     }
 
     case 'posts/CREATE': {
       const new_post_list = [...state.list, action.post_data]
       return { ...state, list: new_post_list }
     }
-    
+
     case 'posts/UPDATE': {
       const new_post_list = state.list.map((a) =>
         parseInt(action.post_data.id) === a.id ? { ...action.post_data } : a);

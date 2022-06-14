@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
+import instance from "../shared/Request"
+
+import axios from 'axios';
 
 
 // 토큰 유무 확인 후 레이아웃 변경
 const Header_home = () => {
+
+  const [loginCheck, setLoginCheck] = useState(false)
+
+
+  React.useEffect(() => {
+    if (!localStorage.getItem("user_token") === null) {
+      setLoginCheck(true);
+    }
+
+  }, [])
+
+
+
   return (
     <HeaderWrap>
       <TitleBox>
@@ -15,7 +31,9 @@ const Header_home = () => {
         <div><img src='' alt="" /></div>
         <div className="myPage">
           <p>닉네임</p>
-          <Link to='/login'>로그아웃</Link>
+          <Link to='/login' onClick={() => {
+            localStorage.clear();
+          }}>로그아웃</Link>
         </div>
       </UserBox>
     </HeaderWrap>

@@ -12,15 +12,7 @@ import styled from 'styled-components'
 
 
 function Signup() {
-
-  // 테스트
-  // const user_list = useSelector((state) => state.user.list)
-  // React.useEffect(() => {
-  //   console.log(user_list)
-  // }, [])
-
   const dispatch = useDispatch()
-
 
   // 프로필 이미지 저장
   const [profile, setProfile] = useState(null);
@@ -32,32 +24,47 @@ function Signup() {
     }
   };
 
+  // 회원가입 정보 가져오기
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+  const [nickName, setNickName] = useState('');
+  const [pw_check, setPwCheck] = useState('');
+
 
   // 이메일 중복 체크(url수정 필요)
   const id_check = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5001/user', { user_id: email_ref.current.value })
+    axios.post('http://54.180.121.151/api/user/id_check', { user_id: email })
       .then((response) => { alert(response) })
       .catch((error) => console.log(error));
   }
 
-  // 회원가입 정보 가져오기
-  const email_ref = React.useRef(null);
-  const nick_ref = React.useRef(null);
-  const pw_ref = React.useRef(null);
-  const pw_confirm_ref = React.useRef(null);
 
   // 회원가입 버튼 클릭시
   const signup = () => {
-    const new_post = {
-      user_id: email_ref.current.value,
+    const user_info = {
+      user_id: email,
       profile_img: profile,
-      nickname: nick_ref.current.value,
-      password: pw_ref.current.value,
-      confirm_password: pw_confirm_ref.current.value,
+      nickname: nickName,
+      password: pw,
+      confirm_password: pw_check
     }
-    //
-    dispatch(add_user_AX(new_post))
+
+    // 유효성 검사
+    if (email === "" || profile === "" || nickName === "" || pw === "" || pw_check === "") {
+      window.alert("모든 항목은 필수입니다😊");
+      return;
+    }
+    if (nickName.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi) !== -1) {
+      window.alert("닉네임에 특수 문자는 안돼요!");
+      return;
+    }
+    if (pw !== pw_check) {
+      window.alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    dispatch(add_user_AX(user_info));
   }
 
 
@@ -67,20 +74,20 @@ function Signup() {
       <Form>
         <label htmlFor="user_id">
           <p>이메일</p>
-          <input type="text" id="user_id" placeholder="아이디를 입력해주세요" ref={email_ref} />
+          <input type="text" id="user_id" placeholder="이메일을 입력해주세요" onChange={(e) => { setEmail(e.target.value); }} />
           <button onClick={id_check}>아이디 중복확인</button>
         </label>
         <label htmlFor="user_nick">
           <p>닉네임</p>
-          <input type="text" id="user_nick" placeholder="닉네임을 입력해주세요" ref={nick_ref} />
+          <input type="text" id="user_nick" placeholder="닉네임을 입력해주세요" onChange={(e) => { setNickName(e.target.value); }} />
         </label>
         <label htmlFor="user_pw">
           <p>비밀번호</p>
-          <input type="password" id="user_pw" placeholder="비밀번호를 입력해주세요" ref={pw_ref} />
+          <input type="password" id="user_pw" placeholder="비밀번호를 입력해주세요" onChange={(e) => { setPw(e.target.value); }} />
         </label>
         <label htmlFor="user_pw_confirm">
           <p>비밀번호 확인</p>
-          <input type="password" id="user_pw_confirm" placeholder="비밀번호를 다시 입력해주세요" ref={pw_confirm_ref} />
+          <input type="password" id="user_pw_confirm" placeholder="비밀번호를 다시 입력해주세요" onChange={(e) => { setPwCheck(e.target.value); }} />
         </label>
         <ProfileBox>
           <p>프로필 선택</p>
@@ -97,8 +104,8 @@ function Signup() {
             <input type="radio" id="user_profile3" name="profile" value="3" onChange={profile_checked} />
           </label>
         </ProfileBox>
-        <InputBtn to='/login' onClick={signup}>회원가입 하기</InputBtn>
       </Form>
+      <InputBtn onClick={signup}>회원가입 하기</InputBtn>
     </SignWrap>
   )
 }
@@ -173,7 +180,7 @@ img {
 }
 `
 
-const InputBtn = styled(Link)`
+const InputBtn = styled.button`
   font-family: 'IM_Hyemin-Regular';
   display: block;
   width: 100%;
