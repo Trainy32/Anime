@@ -25,45 +25,43 @@ export function update_post(post_data) {
 //미들웨어
 export const load_posts_like_AX = () =>{
   return function (dispatch) {
-    axios.get('http://localhost:5001/posts')
-    .then(response => dispatch(load_posts(response.data)))
-    // axios.get('http://54.180.121.151/api/posts/likes')
-    // .then(response => dispatch(load_posts(response.data.posts)))
+    // axios.get('http://localhost:5001/posts')
+    // .then(response => dispatch(load_posts(response.data)))
+    axios.get('http://54.180.121.151/api/posts/likes')
+    .then(response => dispatch(load_posts(response.data.posts)))
   }
 }
 
 export const load_posts_year_AX = () =>{
   return function (dispatch) {
-    axios.get('http://localhost:5001/posts/')
-    .then(response => dispatch(load_posts(response.data.reverse())))
-    // axios.get('http://54.180.121.151/api/posts/release_year')
-    // .then(response => dispatch(load_posts(response.data.posts)))
+    // axios.get('http://localhost:5001/posts/')
+    // .then(response => dispatch(load_posts(response.data.reverse())))
+    axios.get('http://54.180.121.151/api/posts/release_year')
+    .then(response => dispatch(load_posts(response.data.posts)))
   }
 }
 
 export const create_post_AX = (post_data) => {
   return function (dispatch) {
-    axios.post('http://localhost:5001/posts', post_data)
-    .then(() => dispatch(create_post(post_data)))
-    // axios.post('http://54.180.121.151/api/post', post_data)
-    // .then((response) => {
-    //   console.log(response)
-    //   dispatch(create_post(post_data))
-    // })
+    // axios.post('http://localhost:5001/posts', post_data)
+    // .then(() => dispatch(create_post(post_data)))
+    axios.post('http://54.180.121.151/api/post', post_data, {headers:{'authorization': 'Bearer '+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibXV5YWhvQG5hdmVyLmNvbSIsImlhdCI6MTY1NTE5MDQwN30.PzU19ESXQlKUtYC-m8zcmjEoizFYbB2jX5D7SFVl8rU'}})
+    .then((response) => {
+      console.log(response)
+      dispatch(create_post(post_data))
+    })
   }
 }
 
 export const update_post_AX = (post_id, post_data) => {
   return function (dispatch) { 
-    axios.patch('http://localhost:5001/posts/'+post_id, post_data)
-    .then(() => { dispatch(update_post(post_data))
+    // axios.patch('http://localhost:5001/posts/'+post_id, post_data)
+    // .then(() => { dispatch(update_post(post_data))
 
-    // axios.patch('http://54.180.121.151/api/post/'+post_id, post_data)
-    // .then((response) => {
-    //   console.log(response)
-    //   dispatch(update_post(post_data))
-    // })
-  })
+    axios.patch('http://54.180.121.151/api/post/'+post_id, post_data, {headers:{'authorization': 'Bearer '+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibXV5YWhvQG5hdmVyLmNvbSIsImlhdCI6MTY1NTE5MDQwN30.PzU19ESXQlKUtYC-m8zcmjEoizFYbB2jX5D7SFVl8rU'}})
+    .then((response) => {
+      dispatch(update_post(post_data))
+    })
   }
 }
 
