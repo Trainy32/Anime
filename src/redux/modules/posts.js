@@ -32,9 +32,8 @@ export const load_posts_AX = () => {
 
 export const create_post_AX = (post_data) => {
   return function (dispatch) {
-    console.log('미들웨어접속')
-    // axios.post('http://localhost:5001/user', post_data)
-    //   .then(() => dispatch(create_post(post_data)))
+    axios.post('http://localhost:5001/user', post_data)
+      .then(() => dispatch(create_post(post_data)))
   }
 }
 
