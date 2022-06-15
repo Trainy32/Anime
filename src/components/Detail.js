@@ -6,35 +6,53 @@ import styled from 'styled-components'
 import {useParams, useNavigate} from 'react-router-dom';
 // 리덕스 관련
 import {useDispatch, useSelector} from 'react-redux'
-import { createCommentAX, loadCommentAX, deleteCommentAX } from '../redux/modules/comments'
+import { createCommentAX, loadCommentAX, deleteCommentAX, updateCommnetAX } from '../redux/modules/comments'
+import { delete_post_AX } from "../redux/modules/posts";
 // 영상보여주기
 import ReactPlayer from 'react-player';
 //스크롤 관련
 import ScrollRestore from "./ScrollRestore";
 
+
 const Detail = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     //페이지 인덱스값 받아오기
     const params = useParams();
     const id = params.id;
-   
+    
     //데이터 가져오기
     const[posts, setPosts]= useState([]);
     React.useEffect(()=>{
-         axios.get(`http://localhost:5001/posts/${id}`
-          
+         axios.get(`http://54.180.121.151/api/post/detail/${id}`
          )
          .then(response => {
                 setPosts(response.data);
                 
              });
             },[]);
+
+    //댓글 수정하기
+    // const[recomment, setrecomments]= useState(null);
+   
+    // React.useEffect(()=>{
+    //     axios.get(`http://localhost:5001/comments`)
+    //     .then(response=> {setrecomments(response.data)})
+        
+    // },[])
+    // const updatePost =()=> {
+    //     const renew_comment= {comment: comment_ref.current.value}
+    //     dispatch(updateCommnetAX(recomment.id, renew_comment))
+    //      console.log(recomment)
+    // }
+
+        
     //댓글 데이터 가져오기
         const comments =useSelector((state)=>state.comments.comments)
         // console.log(comments);
         React.useEffect(()=>{
-            dispatch(loadCommentAX())
+            dispatch(loadCommentAX(id))
         },[])
     //댓글 입력창 정보 받아오기
         const comment_ref = useRef(null);
@@ -43,9 +61,8 @@ const Detail = () => {
         const new_commnet ={
             comment: comment_ref.current.value,
             nickname : "김상선",
-            created_at: "2020-04-10T20:02:20.686"
         }
-        dispatch(createCommentAX(new_commnet))
+        dispatch(createCommentAX(id,new_commnet))
     }
     // 댓글 삭제하기
     // const delComment=()=>{
@@ -75,6 +92,8 @@ const Detail = () => {
             <div>만화주제가(동영상)
             <ReactPlayer url={posts?.ost_url}></ReactPlayer>
             </div>
+            <button onClick={()=>{dispatch(delete_post_AX(posts?.id))
+                navigate('/')}}>글 삭제하기</button>
             <div >
             댓글 작성하기
                 <input type='text' ref={comment_ref}></input>
@@ -88,8 +107,9 @@ const Detail = () => {
                     <h4>{c.nickname}</h4>
                     <h4>{c.comment}</h4>
                     <h5>{c.created_at}</h5>
-                    <button onClick={()=>{ dispatch(deleteCommentAX(c.id))}}>삭제하기</button>
-                    <button>수정하기</button>
+                    <button onClick={()=>{ dispatch(deleteCommentAX(c.id))
+                    }}>삭제하기</button>
+                    {/* <button onClick={updatePost}>수정하기</button> */}
                 </div>
                     )
                 })

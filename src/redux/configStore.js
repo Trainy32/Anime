@@ -11,5 +11,4 @@ const enhancer = applyMiddleware(...middlewares)
 
 const store = createStore(rootReducer, enhancer);
 
-
 export default store;

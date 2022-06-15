@@ -30,16 +30,16 @@ function Write() {
 
   React.useEffect(() => {
     if (!isNew) {
-      axios.get('http://localhost:5001/posts?id=' + params.post_id)
-      .then(response => {
-        setThisPost(...response.data)
-        setImgUrl(response.data[0].thumbnail_url)
-      })
-      // axios.get('http://54.180.121.151/api/post/detail/' + params.post_id)
-      //   .then(response => {
-      //     setThisPost(response.data)
-      //     setImgUrl(response.data.thumbnail_url)
-      //   })
+      // axios.get('http://localhost:5001/posts?id=' + params.post_id)
+      // .then(response => {
+      //   setThisPost(...response.data)
+      //   setImgUrl(response.data[0].thumbnail_url)
+      // })
+      axios.get('http://54.180.121.151/api/post/detail/' + params.post_id)
+        .then(response => {
+          setThisPost(response.data)
+          setImgUrl(response.data.thumbnail_url)
+        })
     }
   }, [])
 
@@ -85,8 +85,9 @@ function Write() {
       onair_year: onair_year_ref.current.value,
       content: content_ref.current.value,
       ost_url: ost_url_ref.current.value,
+      user_id: "user123",
     }
-    dispatch(update_post_AX(thisPost.id, new_post))
+    dispatch(update_post_AX(params.post_id, new_post))
     navigate('/')
   }
 
@@ -107,7 +108,6 @@ function Write() {
   return (
     <div>
       <button onClick={() => navigate('/')}>임시버튼 : 리스트 가기</button>
-      <button onClick={youtubeSearch}>테스트</button>
 
       <InputAreas>
         <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl}> 이미지를 <br /> 선택해주세요 </ImgPreview>
