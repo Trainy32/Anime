@@ -73,31 +73,41 @@ function AnimeList() {
   return (
     <>
       <Header_home />
-      <ListingOption>
-        <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> /
-        <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
-      </ListingOption >
 
-      <ListWrap>
-        <AutoSizer>
-          {({ height, width }) => (
-            <Grid
-              columnCount={Math.floor(width / 300)}
-              columnWidth={320}
-              height={height}
-              rowCount={Math.ceil(posts.length / (width / 300))}
-              rowHeight={490}
-              width={width}
-              itemData={[posts, Math.floor(width / 300)]}
-            >
-              {makeItem}
-            </Grid>
-          )}
-        </AutoSizer>
-      </ListWrap>
+      <Wrap>
+        <ListingOption>
+          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> /
+          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
+        </ListingOption >
+
+        <ContentsArea>
+          <AutoSizer>
+            {({ height, width }) => (
+              <Grid
+                columnCount={Math.floor(width / 330)}
+                columnWidth={330}
+                height={height}
+                rowCount={Math.ceil(posts.length / Math.floor(width / 330))}
+                rowHeight={500}
+                width={width}
+                itemData={[posts, Math.floor(width / 330)]}
+              >
+                {makeItem}
+              </Grid>
+            )}
+          </AutoSizer>
+        </ContentsArea>
+      </Wrap>
     </>
   );
 }
+
+const Wrap = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+`
 
 const ListingOption = styled.div`
 margin: 20px;
@@ -116,10 +126,10 @@ const OrderByYear = styled.span`
 `
 
 
-const ListWrap = styled.div`
+const ContentsArea = styled.div`
 width: 90vw;
 height: 70vh;
-margin: 0px 10vw;
+margin: 0px;
 `
 
 const Cards = styled.div`

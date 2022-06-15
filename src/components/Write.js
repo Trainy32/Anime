@@ -15,7 +15,6 @@ import { storage } from '../firebase'
 import styled from 'styled-components'
 import { BsYoutube } from 'react-icons/bs'
 
-
 function Write(props) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -25,10 +24,8 @@ function Write(props) {
   const is_login = props.is_login
   const user_info = props.user_info[0]
 
-  console.log(user_info)
-
   // 로그인된 유저가 아니라면, 뒤로 돌려보냅니다.
-  React.useEffect(()=> {
+  React.useEffect(() => {
     if (!is_login) {
       window.alert('글 작성전에 먼저 로그인 해주세요!')
       navigate(-1)
@@ -52,7 +49,7 @@ function Write(props) {
         .then(response => {
           setThisPost(response.data)
           setImgUrl(response.data.thumbnail_url)
-          if(user_info.user_id !== response.data.user_id) {
+          if (is_login && user_info.user_id !== response.data.user_id) {
             window.alert('작성자만 수정할 수 있어요!')
             navigate(-1)
           }
@@ -80,21 +77,29 @@ function Write(props) {
 
   // 작성하기 버튼 눌렀을때 :)
   const writePost = () => {
-    const new_post = {
-      title: title_ref.current.value,
-      thumbnail_url: imgUrl,
-      onair_year: onair_year_ref.current.value,
-      content: content_ref.current.value,
-      ost_url: ost_url_ref.current.value,
-      user_id: user_info.user_id,
+    if (title_ref.current.value.length > 0 && content_ref.current.value.length > 0 && imgUrl) {
+      const new_post = {
+        title: title_ref.current.value,
+        thumbnail_url: imgUrl,
+        onair_year: onair_year_ref.current.value,
+        content: content_ref.current.value,
+        ost_url: ost_url_ref.current.value,
+        user_id: user_info.user_id,
+      }
+      dispatch(create_post_AX(new_post))
+      navigate('/')
+    } else {
+      const msg =
+        !title_ref.current.value.length > 0 ? '만화 제목을 등록해주세요' :
+        !content_ref.current.value.length > 0 ? '만화를 소개해주세요' : '이미지를 등록해주세요'
+      window.alert(msg)
     }
-    dispatch(create_post_AX(new_post))
-    navigate('/')
   }
 
 
   // 수정하기 버튼 눌렀을 때
   const EditPost = () => {
+    if (title_ref.current.value.length > 0 && content_ref.current.value.length > 0 && imgUrl) {
       const new_post = {
         title: title_ref.current.value,
         thumbnail_url: imgUrl,
@@ -105,6 +110,12 @@ function Write(props) {
       }
       dispatch(update_post_AX(params.post_id, new_post))
       navigate('/')
+    } else {
+      const msg =
+        !title_ref.current.value.length > 0 ? '만화 제목을 등록해주세요' :
+        !content_ref.current.value.length > 0 ? '만화를 소개해주세요' : '이미지를 등록해주세요'
+      window.alert(msg)
+    }
   }
 
   // 유튜브 검색 리스트 받아오기
@@ -147,8 +158,8 @@ function Write(props) {
 
           <label>만화 OST
             <input type='url' ref={ost_url_ref}
-              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="클릭하면 자동 검색 ! (직접 입력도 가능)" 
-              onClick={youtubeSearch}/></label>
+              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="클릭하면 자동 검색 ! (직접 입력도 가능)"
+              onClick={youtubeSearch} /></label>
 
 
           <ListTitle>유튜브에서 찾아보세요! (만화 제목 기준 검색)</ListTitle>
@@ -166,7 +177,7 @@ function Write(props) {
                   </ListItem>
                 )
               })
-              : <p>검색 결과가 없어요. <br/> (만화 제목 입력 후 OST 입력창 클릭!)</p>
+              : <p>검색 결과가 없어요. <br /> (만화 제목 입력 후 OST 입력창 클릭!)</p>
             }
           </YoutubeList>
 
