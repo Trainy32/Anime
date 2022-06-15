@@ -14,7 +14,7 @@ function Signup() {
   const dispatch = useDispatch()
 
   // 프로필 이미지 저장
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState('');
 
   // 선택한 프로필 이미지 불러오기
   const profile_checked = (e) => {
@@ -27,7 +27,7 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [nickName, setNickName] = useState('');
-  const [pw_check, setPwCheck] = useState('');
+  const [repwd, setRepwd] = useState('');
 
 
 
@@ -38,23 +38,28 @@ function Signup() {
   const id_check = (e) => {
     e.preventDefault();
 
-
+    // 5~ 17글자
     const email_check = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+    // const email_check = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+
+
 
     if (email_check.test(email)) {
       axios.post('http://54.180.121.151/api/user/id_check', { user_id: email })
         .then((response) => {
+          console.log(response)
           setCheckId(email);
           alert("사용가능한 이메일입니다");
         })
         .catch((error) =>
-          window.alert(error)
+          error.response.data.alert === "아이디가 중복되었습니다" ?
+            alert("이미 가입된 이메일이 있습니다.") : console.log(error.response.data.alert)
         )
     } else {
       alert('이메일 형식으로 입력해주세요!')
     }
   }
-  console.log(checkId);
 
   // 회원가입 버튼 클릭시
   const signup = () => {
@@ -63,11 +68,18 @@ function Signup() {
       profile_img: profile,
       nickname: nickName,
       password: pw,
-      confirm_password: pw_check
+      confirm_password: repwd
     }
 
+
+    //최소 8자 이상으로 숫자, 특수문자가 각각 최소 1개이상
+    const pw_check = /^(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{4,8}$/;
+    var num = pw.search(/[0-9]/g);
+    var eng = pw.search(/[a-z]/ig);
+    var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
     // 유효성 검사
-    if (email === "" || profile === "" || nickName === "" || pw === "" || pw_check === "") {
+    if (email === "" || profile === "" || nickName === "" || pw === "" || repwd === "") {
       window.alert("모든 항목은 필수입니다😊");
       return;
     }
@@ -78,9 +90,23 @@ function Signup() {
     if (nickName.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi) !== -1) {
       window.alert("닉네임에 특수 문자는 안돼요!");
       return;
+    } else if (nickName.length < 3 || nickName.length > 8) {
+      window.alert("닉네임은 3글자 ~ 8자리 이내로 입력해주세요.");
+      return false;
     }
-    if (pw !== pw_check) {
+    if (pw.length < 4 || pw.length > 8) {
+      window.alert("비밀번호는 4자리 ~ 8자리 이내로 입력해주세요.");
+      return false;
+    } else if (pw.search(/\s/) != -1) {
+      window.alert("비밀번호는 공백 없이 입력해주세요.");
+      return false;
+    } else if (num < 0 || eng < 0 || spe < 0) {
+      window.alert("영문, 숫자, 특수문자를 최소 1개씩 혼합하여 입력해주세요");
+      return false;
+    }
+    if (pw !== repwd) {
       window.alert("비밀번호가 일치하지 않습니다.");
+      pw.focus();
       return;
     }
 
@@ -107,7 +133,7 @@ function Signup() {
         </label>
         <label htmlFor="user_pw_confirm">
           <p>비밀번호 확인</p>
-          <input type="password" id="user_pw_confirm" placeholder="비밀번호를 다시 입력해주세요" onChange={(e) => { setPwCheck(e.target.value); }} />
+          <input type="password" id="user_pw_confirm" placeholder="비밀번호를 다시 입력해주세요" onChange={(e) => { setRepwd(e.target.value); }} />
         </label>
         <ProfileBox>
           <p>프로필 선택</p>
