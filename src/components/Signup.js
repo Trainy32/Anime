@@ -30,17 +30,22 @@ function Signup() {
   const [pw_check, setPwCheck] = useState('');
 
 
+
+  const [checkId, setCheckId] = useState('dfa');
+
+
   // 이메일 중복 체크
   const id_check = (e) => {
     e.preventDefault();
+
 
     const email_check = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 
     if (email_check.test(email)) {
       axios.post('http://54.180.121.151/api/user/id_check', { user_id: email })
         .then((response) => {
-          console.log(response);
-          alert(response.data.alert);
+          setCheckId(email);
+          alert("사용가능한 이메일입니다");
         })
         .catch((error) =>
           window.alert(error)
@@ -49,7 +54,7 @@ function Signup() {
       alert('이메일 형식으로 입력해주세요!')
     }
   }
-
+  console.log(checkId);
 
   // 회원가입 버튼 클릭시
   const signup = () => {
@@ -65,6 +70,10 @@ function Signup() {
     if (email === "" || profile === "" || nickName === "" || pw === "" || pw_check === "") {
       window.alert("모든 항목은 필수입니다😊");
       return;
+    }
+    if (email !== checkId) {
+      window.alert("이메일 중복확인을 해주세요!")
+      return
     }
     if (nickName.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi) !== -1) {
       window.alert("닉네임에 특수 문자는 안돼요!");
