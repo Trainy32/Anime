@@ -1,7 +1,6 @@
 import axios from 'axios'
 import instance from '../../shared/Request'
 
-
 // 액션
 const LOAD = 'posts/LOAD'
 const CREATE = 'posts/CREATE'
@@ -54,6 +53,9 @@ export const create_post_AX = (post_data) => {
     .then((response) => {
       window.alert(response.data.msg)
       dispatch(create_post(post_data))
+    }).catch((err) => {
+      console.log(err)
+      window.alert('앗! 문제가 발생했어요. 다시 시도해주세요')
     })
   }
 }
@@ -67,6 +69,9 @@ export const update_post_AX = (post_id, post_data) => {
     .then((response) => {
       window.alert(response.data.msg)
       dispatch(update_post(post_data))
+    }).catch((err) => {
+      console.log(err)
+      window.alert('앗! 문제가 발생했어요. 다시 시도해주세요')
     })
   }
 }
