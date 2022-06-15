@@ -50,7 +50,7 @@ export const create_post_AX = (post_data) => {
   return function (dispatch) {
     // axios.post('http://localhost:5001/posts', post_data)
     // .then(() => dispatch(create_post(post_data)))
-    instance.post('http://54.180.121.151/api/post', post_data, {headers:{'authorization': 'Bearer '+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibXV5YWhvQG5hdmVyLmNvbSIsImlhdCI6MTY1NTE5MDQwN30.PzU19ESXQlKUtYC-m8zcmjEoizFYbB2jX5D7SFVl8rU'}})
+    instance.post('http://54.180.121.151/api/post', post_data)
     .then((response) => {
       window.alert(response.data.msg)
       dispatch(create_post(post_data))

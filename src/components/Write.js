@@ -16,14 +16,27 @@ import styled from 'styled-components'
 import { BsYoutube } from 'react-icons/bs'
 
 
-function Write() {
+function Write(props) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const params = useParams()
 
+  // 유저 정보를 받아옵니다.
+  const is_login = props.is_login
+  const user_info = props.user_info[0]
+
+  console.log(user_info)
+
+  // 로그인된 유저가 아니라면, 뒤로 돌려보냅니다.
+  React.useEffect(()=> {
+    if (!is_login) {
+      window.alert('글 작성전에 먼저 로그인 해주세요!')
+      navigate(-1)
+    }
+  }, [])
+
   // 게시물 수정인지, 새로 쓰는것인지 판별합니다 :)
   const isNew = params.post_id === 'new' ? true : false
-
 
   // 수정이라면 : 현재 포스트의 데이터를 불러와 state로 저장합니다
   const [thisPost, setThisPost] = React.useState(null)
@@ -39,6 +52,10 @@ function Write() {
         .then(response => {
           setThisPost(response.data)
           setImgUrl(response.data.thumbnail_url)
+          if(user_info.user_id !== response.data.user_id) {
+            window.alert('작성자만 수정할 수 있어요!')
+            navigate(-1)
+          }
         })
     }
   }, [])
@@ -49,7 +66,6 @@ function Write() {
   const thumbnail_ref = useRef(null);
   const ost_url_ref = useRef(null);
   const content_ref = useRef(null);
-
 
   // 이미지 파이어베이스 DB에 업로드 & url을 state에 imgUrl 이름으로 저장
   const [imgUrl, setImgUrl] = React.useState(null)
@@ -70,7 +86,7 @@ function Write() {
       onair_year: onair_year_ref.current.value,
       content: content_ref.current.value,
       ost_url: ost_url_ref.current.value,
-      user_id: "user123",
+      user_id: user_info.user_id,
     }
     dispatch(create_post_AX(new_post))
     navigate('/')
@@ -79,16 +95,16 @@ function Write() {
 
   // 수정하기 버튼 눌렀을 때
   const EditPost = () => {
-    const new_post = {
-      title: title_ref.current.value,
-      thumbnail_url: imgUrl,
-      onair_year: onair_year_ref.current.value,
-      content: content_ref.current.value,
-      ost_url: ost_url_ref.current.value,
-      user_id: "user123",
-    }
-    dispatch(update_post_AX(params.post_id, new_post))
-    navigate('/')
+      const new_post = {
+        title: title_ref.current.value,
+        thumbnail_url: imgUrl,
+        onair_year: onair_year_ref.current.value,
+        content: content_ref.current.value,
+        ost_url: ost_url_ref.current.value,
+        user_id: user_info.user_id,
+      }
+      dispatch(update_post_AX(params.post_id, new_post))
+      navigate('/')
   }
 
   // 유튜브 검색 리스트 받아오기
