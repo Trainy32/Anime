@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import profile1 from "../img/1.jpg";
 import profile2 from "../img/2.jpg";
 import profile3 from "../img/3.jpg";
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -31,12 +30,24 @@ function Signup() {
   const [pw_check, setPwCheck] = useState('');
 
 
-  // 이메일 중복 체크(url수정 필요)
+  // 이메일 중복 체크
   const id_check = (e) => {
     e.preventDefault();
-    axios.post('http://54.180.121.151/api/user/id_check', { user_id: email })
-      .then((response) => { alert(response) })
-      .catch((error) => console.log(error));
+
+    const email_check = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+
+    if (email_check.test(email)) {
+      axios.post('http://54.180.121.151/api/user/id_check', { user_id: email })
+        .then((response) => {
+          console.log(response);
+          alert(response.data.alert);
+        })
+        .catch((error) =>
+          window.alert(error)
+        )
+    } else {
+      alert('이메일 형식으로 입력해주세요!')
+    }
   }
 
 
@@ -75,7 +86,7 @@ function Signup() {
         <label htmlFor="user_id">
           <p>이메일</p>
           <input type="text" id="user_id" placeholder="이메일을 입력해주세요" onChange={(e) => { setEmail(e.target.value); }} />
-          <button onClick={id_check}>아이디 중복확인</button>
+          <button className="checkBtn" onClick={id_check}>중복 확인</button>
         </label>
         <label htmlFor="user_nick">
           <p>닉네임</p>
@@ -104,8 +115,8 @@ function Signup() {
             <input type="radio" id="user_profile3" name="profile" value="3" onChange={profile_checked} />
           </label>
         </ProfileBox>
+        <InputBtn type="button" onClick={signup}>회원가입 하기</InputBtn>
       </Form>
-      <InputBtn onClick={signup}>회원가입 하기</InputBtn>
     </SignWrap>
   )
 }
@@ -146,15 +157,15 @@ input {
   border-radius: 2px;
 }
 input#user_id {
-  width: 72%;
+  width: 70%;
 }
 input::placeholder {
   color: #C2C2C2;
 }
-button {
+button.checkBtn {
   border: none;
   padding: 17px 11px;
-  width: 25%;
+  width: 27%;
   margin-left: 3%;
   background: #000;
   color: #fff;

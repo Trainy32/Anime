@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import styled from 'styled-components'
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios';
-import instance from "../shared/Request"
+import { useDispatch } from 'react-redux'
 import { LoginDB } from "../redux/modules/user";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // 로그인 정보 가져오기
-  const [email, setEmail] = React.useState('');
-  const [pw, setPw] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
 
   // 로그인 버튼 클릭시
   const login = (e) => {
@@ -30,31 +25,10 @@ const Login = () => {
       return;
     }
     dispatch(LoginDB(login_info));
-    navigate("/");
   }
 
 
 
-
-
-  // console.log(loginCheck)
-
-  // axios.get('http://54.180.121.151/api/user/me', {
-  //   headers: {
-  //     authorization: 'Bearer ' + user_token //the token is a variable which holds the token
-  //   }
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch(err => {
-  //       // 요청이 정상적으로 끝나지 않았을 때(오류 났을 때) 수행할 작업!
-  //       console.log("에러 났어!");
-  //     })
-  // })
-
-
-
-  const user_list = useSelector((state) => state.user.list)
   return (
     <LoginWrap>
       <Title>로그인</Title>
@@ -67,7 +41,7 @@ const Login = () => {
           <p>비밀번호</p>
           <input type="password" id="user_pw" placeholder="비밀번호를 입력해주세요." onChange={(e) => { setPw(e.target.value); }} />
         </label>
-        <InputBtn to='/' onClick={login}>로그인하기</InputBtn>
+        <InputBtn onClick={login}>로그인하기</InputBtn>
       </Form>
     </LoginWrap>
   )
@@ -116,7 +90,7 @@ input::placeholder {
 }
 `;
 
-const InputBtn = styled(Link)`
+const InputBtn = styled.button`
   font-family: 'IM_Hyemin-Regular';
   display: block;
   width: 100%;

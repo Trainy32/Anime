@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
 // 리덕스 관련 Imports
 
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { load_posts_like_AX, load_posts_year_AX } from '../redux/modules/posts'
 
 // CSS 관련 Imports
 import styled from 'styled-components'
+
+import Header_home from "./Header_home"
 
 function AnimeList() {
   const navigate = useNavigate()
@@ -26,19 +27,20 @@ function AnimeList() {
   const orderby_like = () => {
     dispatch(load_posts_like_AX())
     setListOrder('like')
-  } 
+  }
 
   const orderby_year = () => {
     dispatch(load_posts_year_AX())
     setListOrder('year')
-  } 
+  }
 
 
   return (
     <>
+      <Header_home />
       <ListingOption>
         <button onClick={() => navigate('/write/new')}>(임시) 작성페이지 가기 버튼</button>
-        <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> / 
+        <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> /
         <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
       </ListingOption>
 

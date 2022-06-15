@@ -3,14 +3,23 @@ import styled from 'styled-components'
 import { Link } from "react-router-dom";
 
 const Header_nav = () => {
-  return (
-    <HeaderWrap>
-      <HomeBtn className="btn" to='/'>로고</HomeBtn>
-      {/* if문 사용해서 parmas확인?,  */}
-      <Title>로그인</Title>
-      <RightBtn className="btn" to='/signup'>회원가입</RightBtn>
-    </HeaderWrap>
-  )
+  if (window.location.pathname === '/') return null;
+  if (window.location.pathname === '/login')
+    return (
+      <HeaderWrap>
+        <HomeBtn className="btn" to='/'>로고</HomeBtn>
+        <Title>로그인</Title>
+        <RightBtn className="btn" to='/signup'>회원가입</RightBtn>
+      </HeaderWrap>
+    )
+  if (window.location.pathname === '/signup')
+    return (
+      <HeaderWrap>
+        <HomeBtn className="btn" to='/'>로고</HomeBtn>
+        <Title>회원가입</Title>
+        <RightBtn className="btn" to='/login'>로그인</RightBtn>
+      </HeaderWrap>
+    )
 }
 
 
