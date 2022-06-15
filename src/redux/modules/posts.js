@@ -6,7 +6,7 @@ import instance from '../../shared/Request'
 const LOAD = 'posts/LOAD'
 const CREATE = 'posts/CREATE'
 const UPDATE = 'posts/UPDATE'
-
+const DELETE = 'posts/DELETE'
 
 // 액션생성함수
 export function load_posts(post_list) {
@@ -19,6 +19,10 @@ export function create_post(post_data) {
 
 export function update_post(post_data) {
   return { type: UPDATE, post_data }
+}
+
+export function delete_post(post_id) {
+  return { type: DELETE, post_id }
 }
 
 // http://54.180.121.151/api
@@ -67,6 +71,16 @@ export const update_post_AX = (post_id, post_data) => {
   }
 }
 
+export const delete_post_AX=(post_id)=> {
+  return function (dispatch, getState) {
+    console.log(post_id)
+    axios.delete(`http://localhost:5001/posts/${post_id}`)
+    .then((response)=> console.log(response))
+    dispatch(delete_post())
+    
+  }
+}
+
 
 // 초기값
 const initialState = {
@@ -88,6 +102,14 @@ export default function reducer(state = initialState, action = {}) {
       const new_post_list = state.list.map((a) =>
         parseInt(action.post_data.id) === a.id ? { ...action.post_data } : a);
       return { ...state, list: new_post_list }
+    }
+
+    case 'posts/DELETE':{
+      const renew_post = state.list.filter((c,idx)=>{
+      
+         return action.post_id !==c.post_id  
+        });
+        return {comments: renew_post};
     }
 
 

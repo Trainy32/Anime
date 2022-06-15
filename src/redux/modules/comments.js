@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const LOAD ='comment/LOAD'
 const CREATE ="comment/CREATE"
+const UPDATE = "comment/UPDATE"
 const DELETE = "comment/DELETE"
 
 
@@ -14,28 +15,40 @@ export function createComment (comment){
     return {type:CREATE,comment};
 }
 
+export function updateComment(commentData) {
+    return { type: UPDATE, commentData }
+  }
+
 export function deleteComment(comment_id){
     return{type: DELETE, comment_id};
 }
 
 //미들웨어
-export const loadCommentAX = () =>{
+export const loadCommentAX = (post_id) =>{
     return function(dispatch){
-        axios.get('http://localhost:5001/comments')
-        .then(response =>dispatch(loadComments(response.data)))
+        axios.get(`http://54.180.121.151/api/comment/${post_id}`)
+        .then(response =>dispatch(loadComments(response.data.comments)))
     }
 }
 
-export const createCommentAX = (comments) => {
+export const createCommentAX = (post_id,comments) => {
     return function (dispatch) {
-      axios.post('http://localhost:5001/comments', comments)
+      axios.post(`http://54.180.121.151/api/comment${post_id}`, comments)
       .then(() => dispatch(createComment(comments)))
     }
   }
 
-  export const deleteCommentAX = (comment_id)=> {
+  export const updateCommnetAX = (comment_id, commentData) => {
+    return function (dispatch) { 
+      axios.patch('http://localhost:5001/comments/'+comment_id, commentData)
+      .then(() => { dispatch(updateComment(commentData))
+      })
+    }
+  }
+
+export const deleteCommentAX = (comment_id)=> {
     return function (dispatch, getState) {
-        axios.delete(`http://localhost:5001/comments`)
+        axios.delete(`http://54.180.121.151/api/comment/${comment_id}`)
         .then((response) => console.log(response))
         const comment_list = getState().comments.comments
         console.log(comment_list)
@@ -68,6 +81,13 @@ export default function reducer(state = initialState, action ={}) {
             const new_comment =[...state.comments, action.comment];
             return {comments: new_comment};
         }
+        //댓글 수정 리듀서
+        // case 'comment/UPDATE': {
+        //     const renewComment = state.comments.map((a) =>
+        //       parseInt(action.commentData.id) === a.id ? { ...action.commentData } : a);
+        //     return { ...state, list: renewComment }
+        //   }
+
         //댓글 삭제 리듀서
         case 'comment/DELETE':{ 
             const new_comments_list = state.comments.filter((c,idx)=>{
