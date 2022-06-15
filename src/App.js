@@ -44,8 +44,8 @@ function App() {
     <div className="App">
       <Header_nav />
       <Routes>
-        <Route path='/' element={<AnimeList />} />
-        <Route path='/write/:post_id' element={<Write />} />
+        <Route path='/' element={<AnimeList  is_login={is_login} user_info={user_info}  />} />
+        <Route path='/write/:post_id' element={<Write is_login={is_login} user_info={user_info} />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/detail/:id' element={<Detail />} />
