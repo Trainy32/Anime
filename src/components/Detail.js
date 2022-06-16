@@ -1,12 +1,13 @@
 import React,{useState, useRef} from "react";
 import axios from 'axios';
+// import instance from '../../shared/Request'
 // CSS 관련 Imports
 import styled from 'styled-components'
 //post정보
 import {useParams, useNavigate} from 'react-router-dom';
 // 리덕스 관련
 import {useDispatch, useSelector} from 'react-redux'
-import { createCommentAX, loadCommentAX, deleteCommentAX, updateCommnetAX } from '../redux/modules/comments'
+import { createCommentAX, loadCommentAX, deleteCommentAX, updateCommnetAX, likeAX } from '../redux/modules/comments'
 import { delete_post_AX } from "../redux/modules/posts";
 // 영상보여주기
 import ReactPlayer from 'react-player';
@@ -14,9 +15,14 @@ import ReactPlayer from 'react-player';
 import ScrollRestore from "./ScrollRestore";
 
 
-const Detail = () => {
+const Detail = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    //유저정보
+    const is_login = props.is_login
+    const user_info = props.user_info[0]
+  
 
     //페이지 인덱스값 받아오기
     const params = useParams();
@@ -32,7 +38,11 @@ const Detail = () => {
                 
              });
             },[]);
-
+            
+    //게시글 삭제하기
+    const delete_post = ()=>{
+    dispatch(delete_post_AX(id))
+    navigate('/')}
     //댓글 수정하기
     // const[recomment, setrecomments]= useState(null);
    
@@ -50,7 +60,7 @@ const Detail = () => {
         
     //댓글 데이터 가져오기
         const comments =useSelector((state)=>state.comments.comments)
-        // console.log(comments);
+        console.log(comments);
         React.useEffect(()=>{
             dispatch(loadCommentAX(id))
         },[])
@@ -60,15 +70,21 @@ const Detail = () => {
     const addComment= () => {
         const new_commnet ={
             comment: comment_ref.current.value,
-            nickname : "김상선",
+            nickname : user_info.nickname
         }
         dispatch(createCommentAX(id,new_commnet))
     }
-    // 댓글 삭제하기
-    // const delComment=()=>{
-    //     dispatch(deleteCommentAX())
-    // }
-    
+
+    const addlike=()=>{
+        const like = {
+            post_id : id,
+            user_id: user_info.user_id
+        }
+        dispatch(likeAX(like))
+
+    }
+
+   
     return (
         <Container>
             <ScrollRestore/>
@@ -79,7 +95,7 @@ const Detail = () => {
             <p>작성자명:{posts?.user_id}</p>
             <h3>만화제목:{posts?.title}</h3>
             <h3>방영연도:{posts?.onair_year}</h3>
-        
+            <button onClick={addlike}>좋아요</button>
             </div>
             
         </Div>
@@ -92,9 +108,9 @@ const Detail = () => {
             <div>만화주제가(동영상)
             <ReactPlayer url={posts?.ost_url}></ReactPlayer>
             </div>
-            <button onClick={()=>{dispatch(delete_post_AX(posts?.id))
-                navigate('/')}}>글 삭제하기</button>
+            <button onClick={delete_post}>글 삭제하기</button>
             <div >
+            
             댓글 작성하기
                 <input type='text' ref={comment_ref}></input>
                 <button onClick={addComment}>등록하기</button>
