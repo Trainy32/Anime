@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 
 // 리덕스 관련 Imports
-
 import { useDispatch, useSelector } from 'react-redux'
 import { load_posts_like_AX, load_posts_year_AX } from '../redux/modules/posts'
 
@@ -56,108 +55,184 @@ function AnimeList() {
     // console.log('rowIndex :: ', rowIndex)
 
     return itemIndex < item.length ? (
-      <div style={style}>
+      <GridBox style={style}>
         <Cards>
           <CardThumb onClick={() => navigate('/detail/' + item[itemIndex].post_id)} thumbImg={item[itemIndex].thumbnail_url} />
-          <Texts>
-            <h5>{item[itemIndex].onair_year}~</h5>
-            <h3>{item[itemIndex].title}</h3>
-            <span>❤️ {item[itemIndex].likes} </span>
-            <button onClick={() => navigate('/write/' + item[itemIndex].post_id)}>(임시) 수정</button>
-          </Texts>
+          <CardLabel>
+            <div>
+              <h3>{item[itemIndex].title}</h3>
+              <p>{item[itemIndex].onair_year} ~</p>
+            </div>
+            <span> {item[itemIndex].likes}  <Heart/> </span>
+            {/* <button onClick={() => navigate('/write/' + item[itemIndex].post_id)}>(임시) 수정</button> */}
+          </CardLabel>
         </Cards>
-      </div>
+      </GridBox>
     ) : (null)
   })
 
+  // 스크롤 꼭대기로 가기 버튼
+  const listRef = React.useRef()
+  
+  const scrollToTop = () => {
+    listRef.current.scrollToItem({
+      columnIndex:0,
+      rowIndex: 0
+    })
+
+    console.log(listRef)
+  }
+
+  // 컴포넌트 리턴
   return (
     <>
       <Header_home />
 
       <Wrap>
-        <ListingOption>
-          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike> /
-          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
-        </ListingOption >
-
         <ContentsArea>
           <AutoSizer>
             {({ height, width }) => (
               <Grid
                 columnCount={Math.floor(width / 330)}
-                columnWidth={330}
+                columnWidth={340}
                 height={height}
                 rowCount={Math.ceil(posts.length / Math.floor(width / 330))}
-                rowHeight={500}
+                rowHeight={530}
                 width={width}
-                itemData={[posts, Math.floor(width / 330)]}
+                itemData={[posts, Math.floor(width / 340)]}
+                ref={listRef}
               >
                 {makeItem}
               </Grid>
             )}
           </AutoSizer>
         </ContentsArea>
+
+        <ListingOption>
+          <ToTop onClick={scrollToTop}> Scroll </ToTop>
+          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike>
+          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
+        </ListingOption >
+
       </Wrap>
     </>
   );
 }
 
+
 const Wrap = styled.div`
 display: flex;
-flex-direction: column;
-align-items: center;
+flex-direction: row;
+/* align-items: center; */
 padding: 0px;
+background-image: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655318752651?alt=media&token=fd310dd0-8c16-43e2-ac33-60733fa82791');
+/* background-image: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fueu4y%2FbtrESIs3IiB%2FhS1DtzRTqVRTnTK6BAPyFK%2Fimg.png'); */
+background-size: 800px;
 `
-
 const ListingOption = styled.div`
-margin: 20px;
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+margin: 0px;
+padding: 20px 0px;
 font-weight: 600;
-font-size: 20px;
+font-size: 30px;
+background-color: #49b0ab;
+width:240px;
+box-sizing: border-box;
+border-left: 20px solid #49b0ab;
+box-shadow: 0px 40px 0px #49b0ab;
 
-span {
+button {
   cursor:pointer;
+  max-width: 170px;
+  margin: 10px 0px;
+  padding: 14px;
+  outline: none;
+  border: 3px solid #000;
+  border-radius: 50px;
+  box-shadow: 2px 5px 0px #000;
+  font-weight: 600;
+  font-size: 18px;
+  text-align:center;
 }
 `
-const OrderByLike = styled.span`
-  color: ${(props) => props.list_order === 'like' ? '#fc9700' : '#000'};
-`
-const OrderByYear = styled.span`
-  color: ${(props) => props.list_order === 'year' ? '#fc9700' : '#000'};
+const ToTop = styled.button`
+  background-color: #fb8b8c;
 `
 
+const OrderByLike = styled.button`
+  background-color: ${(props) => props.list_order === 'like' ? '#fae209' : '#ffeeef'};
+`
+const OrderByYear = styled.button`
+  background-color: ${(props) => props.list_order === 'like' ? '#ffeeef' : '#fae209'};
+`
 
 const ContentsArea = styled.div`
-width: 90vw;
-height: 70vh;
+width: 88vw;
+min-width: 380px;
+box-sizing: border-box;
+padding: 5vh 0px 0px 4vw;
+height: 75vh;
 margin: 0px;
+box-shadow: 0px 40px 0px #49b0ab;
+`
+
+const GridBox = styled.div`
+  display:flex; 
+  justify-content:center;
 `
 
 const Cards = styled.div`
-  border: 1px solid #ddd;
-  width: 300px;
-  height: 470px;
+  border: 3px solid #000;
+  width: 280px;
+  height: 450px;
   margin: 10px;
   box-sizing: border-box;
-  border-radius: 0px 0px 20px 20px;
-  box-shadow: 2px 2px 5px #0000001f;
+  border-radius: 25px;
+  box-shadow: 3px 8px 0px #000;
+  background-color: #fff;
 `
-const Texts = styled.div`
-  line-height: 10px;
-  padding: 0px 10px;
+const CardLabel = styled.div`
+  margin: 10px 10px;
+  line-height: 200%;
+  padding: 0px 20px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
 
-  h5 {
-    margin: 15px 0px;
+  h3 {
+    margin: 0px;
   }
+
+  p {
+    margin: 0px;
+  }
+
+  span{
+    display: flex;
+    align-items: center;
+    margin: 30px 0px;
+    gap: 5px;
+  }
+`
+const Heart =styled.div`
+  height: 26px;
+  width: 26px;
+  background: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655315827434?alt=media&token=ca9a6660-b19a-49c2-bb13-30e58a488e7c') no-repeat center;
+  background-size: contain;
 `
 
 const CardThumb = styled.div`
-  border: 1px solid #ddd;
-  width: 300px;
-  height: 350px;
-  margin: -1px 0px 0px -1px;
+  border: 3px solid #000;
+  width: 240px;
+  height: 320px;
+  margin: 20px auto;
   box-sizing: border-box;
+  border-radius: 25px;
   background:url(${(props) => props.thumbImg});
   background-size: cover;
+  background-position:center;
   cursor: pointer;
 `
 
