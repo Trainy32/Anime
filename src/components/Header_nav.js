@@ -11,36 +11,43 @@ import logo from "../img/logo.png";
 
 
 const Header_nav = () => {
+
   // 토큰 유무 확인
   const is_login = localStorage.getItem("user_token") ? true : false;
+
   // 유저의 정보 가져오기
   const user_info = useSelector(state => state.user.user_info);
   const login_user = {
-    profile_img: user_info[0]?.profile_img === 1 ? profile1 : user_info[0]?.profile_img === 2 ? profile2 : profile3,
+    profile_img: user_info[0]?.profile_img === 1 ?
+      profile1 : user_info[0]?.profile_img === 2 ? profile2 : profile3,
     nickname: user_info[0]?.nickname,
     user_id: user_info[0]?.user_id,
   }
+
+  // 메인페이지인 경우 null
   if (window.location.pathname === '/') return null;
+  // 로그인페이지 -> 회원가입 버튼
   if (window.location.pathname === '/login')
     return (
       <HeaderWrap>
-        <HomeBtn className="btn" to='/'>로고</HomeBtn>
+        <HomeBtn className="btn" to='/'>메인으로</HomeBtn>
         <Title><img src={logo} alt="" /></Title>
         <RightBtn className="btn" to='/signup'>회원가입</RightBtn>
       </HeaderWrap>
     )
+  // 회원가입페이지 -> 로그인 버튼
   if (window.location.pathname === '/signup') {
     return (
       <HeaderWrap>
-        <HomeBtn className="btn" to='/'>로고</HomeBtn>
+        <HomeBtn className="btn" to='/'>메인으로</HomeBtn>
         <Title><img src={logo} alt="" /></Title>
         <RightBtn className="btn" to='/login'>로그인</RightBtn>
       </HeaderWrap>
     )
-  } else {
+  } else { // 그외 작성페이지, 상세페이지
     return (
       <HeaderWrap>
-        <HomeBtn className="btn" to='/'>로고</HomeBtn>
+        <HomeBtn className="btn" to='/'>메인으로</HomeBtn>
         <Title><img src={logo} alt="" /></Title>
 
         {is_login === false ?
@@ -63,8 +70,8 @@ const HeaderWrap = styled.div`
   height: 80px;
   background: #4AAEAA;
   position: relative;
-  border-top:7px solid #000;
-  border-bottom:7px solid #000;
+  border-top:5px solid #000;
+  border-bottom:5px solid #000;
   font-family: '양진체';
 
   .btn {

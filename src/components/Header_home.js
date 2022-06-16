@@ -21,8 +21,9 @@ const Header_home = () => {
     nickname: user_info[0]?.nickname,
     user_id: user_info[0]?.user_id,
   }
-
+  console.log(login_user.nickname)
   return (
+
     is_login === false ?
       <HeaderWrap>
         <Info>
