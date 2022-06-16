@@ -58,7 +58,6 @@ function AnimeList() {
               <p>{item[itemIndex].onair_year} ~</p>
             </div>
             <span> {item[itemIndex].likes}  <Heart/> </span>
-            {/* <button onClick={() => navigate('/write/' + item[itemIndex].post_id)}>(임시) 수정</button> */}
           </CardLabel>
         </Cards>
       </GridBox>
