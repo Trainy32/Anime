@@ -98,10 +98,10 @@ const Detail = (props) => {
 
             <label>이 만화는 몇 살일까요?</label>
             <div><h2>{posts?.period}살</h2></div>
-            <button onClick={addlike}>좋아요</button>
+           
             
             </Box>
-        
+            <Likebtn onClick={addlike}><Heart/></Likebtn>
             
         </Div>
         
@@ -114,7 +114,10 @@ const Detail = (props) => {
             <h2>OST 들어보기</h2>
             <ReactPlayer url={posts?.ost_url}></ReactPlayer>
         </Movie>
+        <div style={{display: 'flex'}}>
             <Button onClick={delete_post}>글 삭제하기</Button>
+            <Button onClick={delete_post}>글 수정하기</Button>
+        </div>
 
         <Content>
             <h2>댓글</h2>
@@ -301,6 +304,19 @@ width: 100vh;
 height: 100vw;
 margin: auto;
 font-family: '양진체';
+`
+
+const Likebtn = styled.button`
+border: 0;
+outline: 0;
+background-color: white;
+`
+
+const Heart =styled.div`
+  height: 50px;
+  width: 50px;
+  background: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655315827434?alt=media&token=ca9a6660-b19a-49c2-bb13-30e58a488e7c') no-repeat center;
+  background-size: contain;
 `
 
 export default Detail;
