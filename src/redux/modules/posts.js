@@ -69,7 +69,6 @@ export const update_post_AX = (post_id, post_data) => {
 
 export const delete_post_AX=(post_id)=> {
   return function (dispatch, getState) {
-    console.log(post_id)
     instance.delete(`http://54.180.121.151/api/post/${post_id}`)
     .then((response)=> console.log(response))
     dispatch(delete_post())
