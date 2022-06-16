@@ -75,7 +75,11 @@ const Detail = (props) => {
     }
 
     const addlike=()=>{
+        if (is_login) {
         dispatch(likeAX(id))
+        } else {
+            window.alert('먼저 로그인해 주세요!')           
+        }
     }
 
    

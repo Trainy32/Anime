@@ -52,7 +52,10 @@ export const createCommentAX = (post_id,comments) => {
 export const likeAX = (id) => {
     return function (dispatch){
         instance.patch(`http://54.180.121.151/api/post/like/${id}`)
-        .then((response) => console.log(response));
+        .then((response) => {
+        console.log(response)
+        window.alert(response.data.msg)
+    });
         // .catch((error) => console.log(error));
     }
   }
