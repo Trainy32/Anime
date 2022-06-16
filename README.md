@@ -28,8 +28,13 @@
 
 
 <h2> 🎬 링크 & 시연 영상 </h2>
-
-Yet<br/><br/>
+<b> 시연 영상 </b> <br/>
+https://www.youtube.com/watch?v=_U0lL7_E7qU&feature=youtu.be <br/>
+<br/>
+<b> 접속 링크 </b> <br/>
+http://suhyun.site.s3-website.ap-northeast-2.amazonaws.com/
+<br/>
+<br/>
 
 
 <h2>💻 핵심기능 </h2>
@@ -46,7 +51,7 @@ Yet<br/><br/>
 <li> <b> 메인페이지 </b><br/>
 : 추천순, 방영연도 순의 2가지 방식으로 리스트를 정렬해서 볼 수 있습니다. <br/>
 : 게시글의 추천 수가 썸네일과 함께 디스플레이 됩니다. <br/>
-: Windowing 기법을 이용한 무한스크롤 -> 구현 예정 <br/>
+: Windowing 기법을 이용한 가상화 목록 구현 <br/>
   
 <br/>
 
@@ -56,7 +61,7 @@ Yet<br/><br/>
 
 <br/>
   
-<li> <b> 글 상세보기 & 댓글 & 좋아요 </b>
+<li> <b> 글 상세보기 & 댓글 & 좋아요 </b><br/>
  : 리액트 플레이어를 이용해 상세보기 페이지에서 바로 동영상을 재생할 수 있습니다.<br/>
  : 게시글에 좋아요를 누를 수 있습니다. <br/>
  : 게시글에 댓글을 달고 & 수정하고 & 삭제할 수 있습니다.
@@ -72,6 +77,7 @@ Yet<br/><br/>
 <li> React-Player
 <li> Firebase Storage
 <li> Styled-Components
+<li> Tool : Git, Notion, Figma
   
 <br/>
   
@@ -79,7 +85,6 @@ Yet<br/><br/>
 <li> Server: AWS EC2 (Ubuntu 18.04 LTS)
 <li> Database: MongoDB
 <li> Runtime Flatform : Node.js
-<li> View : HTML, CSS, Javascript
 <li> Tool : Git, Notion
   
 <br/>
