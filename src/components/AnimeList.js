@@ -83,6 +83,13 @@ function AnimeList() {
       <Header_home />
 
       <Wrap>
+        
+      <ListingOption>
+          <ToTop onClick={scrollToTop}> Scroll </ToTop>
+          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike>
+          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
+        </ListingOption >
+
         <ContentsArea>
           <AutoSizer>
             {({ height, width }) => (
@@ -101,13 +108,6 @@ function AnimeList() {
             )}
           </AutoSizer>
         </ContentsArea>
-
-        <ListingOption>
-          <ToTop onClick={scrollToTop}> Scroll </ToTop>
-          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike>
-          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
-        </ListingOption >
-
       </Wrap>
     </>
   );
@@ -116,29 +116,26 @@ function AnimeList() {
 
 const Wrap = styled.div`
 display: flex;
-flex-direction: row;
+flex-direction: column;
 padding: 0px;
 background-image: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655318752651?alt=media&token=fd310dd0-8c16-43e2-ac33-60733fa82791');
 background-size: 800px;
 `
 const ListingOption = styled.div`
 display: flex;
-flex-direction: column;
+flex-direction: row;
 justify-content: flex-end;
-margin: 0px;
-padding: 20px 0px;
 font-weight: 600;
 font-size: 30px;
-background-color: #49b0ab;
-width:240px;
+/* background-color: #49b0ab; */
+width: 100%;
 box-sizing: border-box;
-border-left: 20px solid #49b0ab;
-box-shadow: 0px 40px 0px #49b0ab;
+padding: 10px 20px 0px 00px;
 
 button {
   cursor:pointer;
   max-width: 170px;
-  margin: 10px 0px;
+  margin: 0px 10px;
   padding: 14px;
   outline: none;
   border: 3px solid #000;
@@ -164,10 +161,9 @@ const ContentsArea = styled.div`
 width: 88vw;
 min-width: 380px;
 box-sizing: border-box;
-padding: 5vh 0px 0px 2vw;
-height: 70vh;
+padding: 2vh 0px 0px 5vw;
+height: 65vh;
 margin: 0px;
-box-shadow: 0px 40px 0px #49b0ab;
 `
 
 const GridBox = styled.div`

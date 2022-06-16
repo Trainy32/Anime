@@ -125,8 +125,8 @@ const TitleBox = styled.div`
   background: #4AAEAA; 
   position: relative;
   box-sizing: border-box;
-  border-top:7px solid #000;
-  border-bottom:7px solid #000;
+  border-top:5px solid #000;
+  border-bottom:5px solid #000;
 
 
 `
