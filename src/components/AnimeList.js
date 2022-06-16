@@ -117,10 +117,8 @@ function AnimeList() {
 const Wrap = styled.div`
 display: flex;
 flex-direction: row;
-/* align-items: center; */
 padding: 0px;
 background-image: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655318752651?alt=media&token=fd310dd0-8c16-43e2-ac33-60733fa82791');
-/* background-image: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fueu4y%2FbtrESIs3IiB%2FhS1DtzRTqVRTnTK6BAPyFK%2Fimg.png'); */
 background-size: 800px;
 `
 const ListingOption = styled.div`
@@ -166,8 +164,8 @@ const ContentsArea = styled.div`
 width: 88vw;
 min-width: 380px;
 box-sizing: border-box;
-padding: 5vh 0px 0px 4vw;
-height: 75vh;
+padding: 5vh 0px 0px 2vw;
+height: 70vh;
 margin: 0px;
 box-shadow: 0px 40px 0px #49b0ab;
 `
