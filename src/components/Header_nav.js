@@ -1,37 +1,74 @@
 import React from "react";
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux'
+
+// 프로필 이미지 improt
+import profile1 from "../img/1.jpg";
+import profile2 from "../img/2.jpg";
+import profile3 from "../img/3.jpg";
+import logo from "../img/logo.png";
+
 
 const Header_nav = () => {
+  // 토큰 유무 확인
+  const is_login = localStorage.getItem("user_token") ? true : false;
+  // 유저의 정보 가져오기
+  const user_info = useSelector(state => state.user.user_info);
+  const login_user = {
+    profile_img: user_info[0]?.profile_img === 1 ? profile1 : user_info[0]?.profile_img === 2 ? profile2 : profile3,
+    nickname: user_info[0]?.nickname,
+    user_id: user_info[0]?.user_id,
+  }
   if (window.location.pathname === '/') return null;
   if (window.location.pathname === '/login')
     return (
       <HeaderWrap>
         <HomeBtn className="btn" to='/'>로고</HomeBtn>
-        <Title>로그인</Title>
+        <Title><img src={logo} alt="" /></Title>
         <RightBtn className="btn" to='/signup'>회원가입</RightBtn>
       </HeaderWrap>
     )
-  if (window.location.pathname === '/signup')
+  if (window.location.pathname === '/signup') {
     return (
       <HeaderWrap>
         <HomeBtn className="btn" to='/'>로고</HomeBtn>
-        <Title>회원가입</Title>
+        <Title><img src={logo} alt="" /></Title>
         <RightBtn className="btn" to='/login'>로그인</RightBtn>
       </HeaderWrap>
     )
+  } else {
+    return (
+      <HeaderWrap>
+        <HomeBtn className="btn" to='/'>로고</HomeBtn>
+        <Title><img src={logo} alt="" /></Title>
+
+        {is_login === false ?
+          <RightBtn className="btn" to='/login'>로그인</RightBtn> :
+          <UserBox>
+            <div><img src={login_user.profile_img} alt="프로필 이미지" /></div>
+            <p>{login_user.nickname}</p>
+          </UserBox>
+        }
+
+      </HeaderWrap>
+    )
+  }
+
 }
 
 
 const HeaderWrap = styled.div`
   width: 100%;
   height: 80px;
-  background: #000;
+  background: #4AAEAA;
   position: relative;
+  border-top:7px solid #000;
+  border-bottom:7px solid #000;
+  font-family: '양진체';
 
   .btn {
     position: absolute;
-    /* line-height: 80px; */
     background: #eee;
     border-radius: 5px;
     text-align: center;
@@ -39,27 +76,73 @@ const HeaderWrap = styled.div`
     transform: translateY(-50%);
     padding: 10px 30px;
     text-decoration: none;
+    
+  }
+`
+
+
+const LoginBox = styled.div`
+position: absolute;
+  top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 30px;
+`
+const UserBox = styled.div`
+  width: 160px;
+  height: 45px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  background: #FFEEEF;
+  position: absolute;
+  right:0;
+  margin-right: 30px;
+  top:50%;
+  transform: translateY(-50%);
+  
+
+  div{
+    position: absolute;
+    left:7%; top:50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height:35px;
+    border-radius: 50%;
+  }
+  p{
+    margin:0;
+    margin-left: 30px;
+    line-height: 48px;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
   }
 `
 const Title = styled.h1`
   position: absolute;
-  display: inline-block;
-  top: 50%; left: 50%;
+  top: 55%; left: 50%;
   transform: translate(-50%, -50%);
-  margin: 0;
-  color:#fff
+  width: 153px;
+  margin:0;
+
+img {
+  width:100%;
+  height:100%;
+}
 `
 
 const HomeBtn = styled(Link)`
 left:0;
 margin-left: 30px;
+border: 3px solid #000;
+  border-radius: 10px;
 `
 
 const RightBtn = styled(Link)`
 right:0;
 margin-right: 30px;
-
+border: 3px solid #000;
+  border-radius: 10px;
 `
-
-
 export default Header_nav;

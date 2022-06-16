@@ -48,9 +48,18 @@ const Login = () => {
 }
 
 const LoginWrap = styled.div`
-  position: absolute;
+  /* position: absolute;
   top:50%; left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+  font-family: '양진체';
+padding: 60px 0;
+width: 578px;
+border: 3px solid #000;
+margin-top: 40px;
+margin: 40px auto;
+border-radius: 22px;
+box-shadow: 0px 10px 0px 0px;
+
   
 `
 
@@ -96,10 +105,12 @@ const InputBtn = styled.button`
   width: 100%;
   padding: 16px 10px;
   margin-top: 70px;
-  background: #000;
+  background: #49B0AB;
   border: none;
   color:#fff;
   font-size: 18px;
   cursor: pointer;
+  border-radius: 2px;
+  font-family: '양진체';
 `;
 export default Login;
