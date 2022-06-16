@@ -25,7 +25,6 @@ export const add_user_AX = (post_info) => {
   return function (dispatch) {
     axios.post('http://54.180.121.151/api/user/signup', post_info)
       .then((response) => {
-        console.log(response);
         dispatch(add_user(post_info))
         window.alert("회원가입 완료!")
         window.location.replace('/login')
@@ -42,10 +41,9 @@ export const LoginDB = (login_info) => {
   return function (dispatch) {
     axios.post('http://54.180.121.151/api/user/login', login_info)
       .then((response) => {
-        console.log(response)
         localStorage.setItem("user_token", response.data.token);
-        // window.alert("로그인 완료!")
-        // window.location.replace('/')
+        window.alert("로그인 완료!")
+        window.location.replace('/')
       })
       .catch((error) => alert(error.response.data.alert));
   }
@@ -56,7 +54,6 @@ export const loginCheckDB = () => {
   return function (dispatch) {
     instance.get('/api/user/me')
       .then((response) => {
-        console.log(response);
         dispatch(set_user({
           nickname: response.data.user.nickname,
           profile_img: response.data.user.profile_img,
