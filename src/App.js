@@ -48,7 +48,7 @@ function App() {
         <Route path='/write/:post_id' element={<Write is_login={is_login} user_info={user_info} />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/detail/:id' element={<Detail />} />
+        <Route path='/detail/:id' element={<Detail  is_login={is_login} user_info={user_info}  />}/>
       </Routes>
     </div>
   );
