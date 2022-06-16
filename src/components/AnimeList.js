@@ -18,7 +18,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 function AnimeList() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const posts = useSelector((state) => state.posts.list)
+  const posts = useSelector((state) => state.posts.list) 
 
   // 리덕스에 포스트 리스트를 로딩해옵니다. (기본값 : 추천순 정렬)
   React.useEffect(() => {
@@ -47,12 +47,6 @@ function AnimeList() {
     const style = data.style
 
     const itemIndex = columnIndex + (rowIndex * rowLength)
-
-    // console.log('데이터 :: ', data)
-    // console.log('item :: ', item)
-    // console.log('rowLength :: ', rowLength)
-    // console.log('columnIndex :: ', columnIndex)
-    // console.log('rowIndex :: ', rowIndex)
 
     return itemIndex < item.length ? (
       <GridBox style={style}>

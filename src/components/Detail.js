@@ -7,7 +7,7 @@ import {useParams, useNavigate} from 'react-router-dom';
 // 리덕스 관련
 import {useDispatch, useSelector} from 'react-redux'
 import { createCommentAX, loadCommentAX, deleteCommentAX, updateCommnetAX } from '../redux/modules/comments'
-import { delete_post_AX } from "../redux/modules/posts";
+import { delete_post_AX, load_posts_like_AX } from "../redux/modules/posts";
 // 영상보여주기
 import ReactPlayer from 'react-player';
 //스크롤 관련
@@ -92,7 +92,8 @@ const Detail = () => {
             <div>만화주제가(동영상)
             <ReactPlayer url={posts?.ost_url}></ReactPlayer>
             </div>
-            <button onClick={()=>{dispatch(delete_post_AX(posts?.id))
+            <button onClick={()=>{dispatch(delete_post_AX(id));
+            dispatch(load_posts_like_AX())
                 navigate('/')}}>글 삭제하기</button>
             <div >
             댓글 작성하기
