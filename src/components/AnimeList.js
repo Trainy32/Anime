@@ -18,7 +18,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 function AnimeList() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const posts = useSelector((state) => state.posts.list)
+  const posts = useSelector((state) => state.posts.list) 
 
   // 리덕스에 포스트 리스트를 로딩해옵니다. (기본값 : 추천순 정렬)
   React.useEffect(() => {
@@ -47,12 +47,6 @@ function AnimeList() {
     const style = data.style
 
     const itemIndex = columnIndex + (rowIndex * rowLength)
-
-    // console.log('데이터 :: ', data)
-    // console.log('item :: ', item)
-    // console.log('rowLength :: ', rowLength)
-    // console.log('columnIndex :: ', columnIndex)
-    // console.log('rowIndex :: ', rowIndex)
 
     return itemIndex < item.length ? (
       <GridBox style={style}>
@@ -89,16 +83,23 @@ function AnimeList() {
       <Header_home />
 
       <Wrap>
+        
+      <ListingOption>
+          <ToTop onClick={scrollToTop}> UP </ToTop>
+          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike>
+          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
+        </ListingOption >
+
         <ContentsArea>
           <AutoSizer>
             {({ height, width }) => (
               <Grid
-                columnCount={Math.floor(width / 330)}
+                columnCount={Math.floor(width / 340)}
                 columnWidth={340}
                 height={height}
-                rowCount={Math.ceil(posts.length / Math.floor(width / 330))}
+                rowCount={Math.ceil(posts.length / Math.floor(width / 340))}
                 rowHeight={530}
-                width={width}
+                width={width + 80}
                 itemData={[posts, Math.floor(width / 340)]}
                 ref={listRef}
               >
@@ -107,13 +108,6 @@ function AnimeList() {
             )}
           </AutoSizer>
         </ContentsArea>
-
-        <ListingOption>
-          <ToTop onClick={scrollToTop}> Scroll </ToTop>
-          <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike>
-          <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
-        </ListingOption >
-
       </Wrap>
     </>
   );
@@ -122,39 +116,33 @@ function AnimeList() {
 
 const Wrap = styled.div`
 display: flex;
-flex-direction: row;
-/* align-items: center; */
+flex-direction: column;
 padding: 0px;
 background-image: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655318752651?alt=media&token=fd310dd0-8c16-43e2-ac33-60733fa82791');
-/* background-image: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fueu4y%2FbtrESIs3IiB%2FhS1DtzRTqVRTnTK6BAPyFK%2Fimg.png'); */
 background-size: 800px;
 `
 const ListingOption = styled.div`
 display: flex;
-flex-direction: column;
+flex-direction: row;
 justify-content: flex-end;
-margin: 0px;
-padding: 20px 0px;
-font-weight: 600;
 font-size: 30px;
-background-color: #49b0ab;
-width:240px;
+/* background-color: #49b0ab; */
+width: 100%;
 box-sizing: border-box;
-border-left: 20px solid #49b0ab;
-box-shadow: 0px 40px 0px #49b0ab;
+padding: 10px 20px 0px 00px;
 
 button {
   cursor:pointer;
   max-width: 170px;
-  margin: 10px 0px;
-  padding: 14px;
+  margin: 0px 10px;
+  padding: 14px 20px 12px 20px;
   outline: none;
   border: 3px solid #000;
   border-radius: 50px;
   box-shadow: 2px 5px 0px #000;
-  font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   text-align:center;
+  font-family: '양진체';
 }
 `
 const ToTop = styled.button`
@@ -172,10 +160,10 @@ const ContentsArea = styled.div`
 width: 88vw;
 min-width: 380px;
 box-sizing: border-box;
-padding: 5vh 0px 0px 4vw;
-height: 75vh;
+padding: 2vh 0px 0px 5vw;
+height: 63vh;
 margin: 0px;
-box-shadow: 0px 40px 0px #49b0ab;
+font-family: '양진체';
 `
 
 const GridBox = styled.div`
@@ -203,10 +191,14 @@ const CardLabel = styled.div`
 
   h3 {
     margin: 0px;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 2px;
   }
 
   p {
-    margin: 0px;
+    margin-top: 2px;
+    font-size: 16px;
   }
 
   span{
@@ -214,6 +206,7 @@ const CardLabel = styled.div`
     align-items: center;
     margin: 30px 0px;
     gap: 5px;
+    font-size: 16px;
   }
 `
 const Heart =styled.div`
@@ -221,6 +214,7 @@ const Heart =styled.div`
   width: 26px;
   background: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655315827434?alt=media&token=ca9a6660-b19a-49c2-bb13-30e58a488e7c') no-repeat center;
   background-size: contain;
+  margin-bottom: 10px;
 `
 
 const CardThumb = styled.div`

@@ -24,13 +24,10 @@ export function delete_post(post_id) {
   return { type: DELETE, post_id }
 }
 
-// http://54.180.121.151/api
 
 //미들웨어
 export const load_posts_like_AX = () => {
   return function (dispatch) {
-    // axios.get('http://localhost:5001/posts')
-    // .then(response => dispatch(load_posts(response.data)))
     axios.get('http://54.180.121.151/api/posts/likes')
     .then(response => dispatch(load_posts(response.data.posts)))
   }
@@ -38,8 +35,6 @@ export const load_posts_like_AX = () => {
 
 export const load_posts_year_AX = () => {
   return function (dispatch) {
-    // axios.get('http://localhost:5001/posts/')
-    // .then(response => dispatch(load_posts(response.data.reverse())))
     axios.get('http://54.180.121.151/api/posts/release_year')
     .then(response => dispatch(load_posts(response.data.posts)))
   }
@@ -47,24 +42,20 @@ export const load_posts_year_AX = () => {
 
 export const create_post_AX = (post_data) => {
   return function (dispatch) {
-    // axios.post('http://localhost:5001/posts', post_data)
-    // .then(() => dispatch(create_post(post_data)))
     instance.post('http://54.180.121.151/api/post', post_data)
     .then((response) => {
-      window.alert(response.data.msg)
+      post_data = {...post_data, post_id: response.data.post_id}
       dispatch(create_post(post_data))
+      window.alert('추억의 만화가 등록되었어요!')
     }).catch((err) => {
-      console.log(err)
       window.alert('앗! 문제가 발생했어요. 다시 시도해주세요')
+      console.log(err)
     })
   }
 }
 
 export const update_post_AX = (post_id, post_data) => {
   return function (dispatch) { 
-    // axios.patch('http://localhost:5001/posts/'+post_id, post_data)
-    // .then(() => { dispatch(update_post(post_data))
-
     instance.patch('http://54.180.121.151/api/post/'+post_id, post_data)
     .then((response) => {
       window.alert(response.data.msg)
@@ -78,11 +69,9 @@ export const update_post_AX = (post_id, post_data) => {
 
 export const delete_post_AX=(post_id)=> {
   return function (dispatch, getState) {
-    console.log(post_id)
-    axios.delete(`http://54.180.121.151/api/post/${post_id}`)
+    instance.delete(`http://54.180.121.151/api/post/${post_id}`)
     .then((response)=> console.log(response))
     dispatch(delete_post())
-    
   }
 }
 
@@ -110,11 +99,8 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case 'posts/DELETE':{
-      const renew_post = state.list.filter((c,idx)=>{
-      
-         return action.post_id !==c.post_id  
-        });
-        return {comments: renew_post};
+      const renew_post = state.list.filter( c => action.post_id !== c.post_id);
+        return {list: renew_post};
     }
 
 

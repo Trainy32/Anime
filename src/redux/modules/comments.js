@@ -49,9 +49,9 @@ export const createCommentAX = (post_id,comments) => {
 
 //좋아요
 
-export const likeAX = (id, user_id) => {
+export const likeAX = (id) => {
     return function (dispatch){
-        axios.patch(`http://54.180.121.151/api/post/like/${id}`,user_id)
+        instance.patch(`http://54.180.121.151/api/post/like/${id}`)
         .then((response) => console.log(response));
         // .catch((error) => console.log(error));
     }

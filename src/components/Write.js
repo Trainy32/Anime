@@ -40,11 +40,6 @@ function Write(props) {
 
   React.useEffect(() => {
     if (!isNew) {
-      // axios.get('http://localhost:5001/posts?id=' + params.post_id)
-      // .then(response => {
-      //   setThisPost(...response.data)
-      //   setImgUrl(response.data[0].thumbnail_url)
-      // })
       axios.get('http://54.180.121.151/api/post/detail/' + params.post_id)
         .then(response => {
           setThisPost(response.data)
@@ -91,7 +86,7 @@ function Write(props) {
     } else {
       const msg =
         !title_ref.current.value.length > 0 ? '만화 제목을 등록해주세요' :
-        !content_ref.current.value.length > 0 ? '만화를 소개해주세요' : '이미지를 등록해주세요'
+          !content_ref.current.value.length > 0 ? '만화를 소개해주세요' : '이미지를 등록해주세요'
       window.alert(msg)
     }
   }
@@ -113,7 +108,7 @@ function Write(props) {
     } else {
       const msg =
         !title_ref.current.value.length > 0 ? '만화 제목을 등록해주세요' :
-        !content_ref.current.value.length > 0 ? '만화를 소개해주세요' : '이미지를 등록해주세요'
+          !content_ref.current.value.length > 0 ? '만화를 소개해주세요' : '이미지를 등록해주세요'
       window.alert(msg)
     }
   }
@@ -133,65 +128,64 @@ function Write(props) {
   }
 
   return (
-      <Wrap>
-        <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl}> 이미지를 <br /> 선택해주세요 </ImgPreview>
+    <Wrap>
+      <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl}> 이미지를 <br /> 선택해주세요 </ImgPreview>
 
-        <InputAreas>
-          <label>만화제목 </label>
-            <input type='text' id="title" ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
-              defaultValue={thisPost ? thisPost.title : ''} />
+      <InputAreas>
+        <label>만화제목 </label>
+        <input type='text' id="title" ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
+          defaultValue={thisPost ? thisPost.title : ''} />
 
-          <label>방영연도</label>
-            <input type='number' ref={onair_year_ref}
-              defaultValue={thisPost ? thisPost.onair_year : '2000'} />
-          <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} />
-          <div id="description">
-            <label> 만화소개 </label>
-            <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
-              defaultValue={thisPost ? thisPost.content : ''} />
-          </div>
+        <label>방영연도</label>
+        <input type='number' ref={onair_year_ref}
+          defaultValue={thisPost ? thisPost.onair_year : '2000'} />
+        <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} />
+        <div id="description">
+          <label> 만화소개 </label>
+          <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
+            defaultValue={thisPost ? thisPost.content : ''} />
+        </div>
 
-          <label htmlFor={ost_url_ref}>만화 OST</label>
-            <input type='url' ref={ost_url_ref}
-              defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="클릭하면 자동 검색 ! (직접 입력도 가능)"
-              onClick={youtubeSearch} />
+        <label htmlFor={ost_url_ref}>만화 OST</label>
+        <input type='url' ref={ost_url_ref}
+          defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="클릭하면 자동 검색 ! (직접 입력도 가능)"
+          onClick={youtubeSearch} />
 
 
-          <ListTitle>유튜브에서 찾아보세요! (만화 제목 기준 검색)</ListTitle>
-          <YoutubeList>
-            {searchResult ?
-              searchResult.map((v, i) => {
-                return (
-                  <ListItem key={i} onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)} >
-                    <VideoThumb video_thumb={v.snippet.thumbnails.default.url} />
-                    <VideoText>
-                      {v.snippet.title}
-                      {/* <p> { v.snippet.description } </p> */}
-                    </VideoText>
-                    <button> 선택 </button>
-                  </ListItem>
-                )
-              })
-              : <p>검색 결과가 없어요. <br /> (만화 제목 입력 후 OST 입력창 클릭!)</p>
-            }
-          </YoutubeList>
+        <ListTitle>유튜브에서 찾아보세요! (만화 제목 기준 검색)</ListTitle>
+        <YoutubeList>
+          {searchResult ?
+            searchResult.map((v, i) => {
+              return (
+                <ListItem key={i} onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)} >
+                  <VideoThumb video_thumb={v.snippet.thumbnails.default.url} />
+                  <VideoText>
+                    {v.snippet.title}
+                  </VideoText>
+                  <button> 선택 </button>
+                </ListItem>
+              )
+            })
+            : <p>검색 결과가 없어요. <br /> (만화 제목 입력 후 OST 입력창 클릭!)</p>
+          }
+        </YoutubeList>
 
-          <GoToYoutube>
-            <p> 그래도 못 찾으셨다면..?</p>
-            <YoutubeBtn target='blank' href="https://www.youtube.com/">
-              <YoutubeIcon>
-                <BsYoutube />
-              </YoutubeIcon>  유튜브 바로가기
-            </YoutubeBtn>
-          </GoToYoutube>
-        </InputAreas>
+        <GoToYoutube>
+          <p> 그래도 못 찾으셨다면..?</p>
+          <YoutubeBtn target='blank' href="https://www.youtube.com/">
+            <YoutubeIcon>
+              <BsYoutube />
+            </YoutubeIcon>  유튜브 바로가기
+          </YoutubeBtn>
+        </GoToYoutube>
+      </InputAreas>
 
-        {isNew ?
+      {isNew ?
         <Button onClick={writePost}> 등록하기 </Button>
         : <Button onClick={EditPost}> 수정하기 </Button>
       }
 
-      </Wrap>
+    </Wrap>
   )
 }
 
@@ -245,6 +239,8 @@ const InputAreas = styled.div`
   label {
     text-align: left;
     font-weight: 600;
+    
+    font-family: '양진체';
   }
 
   #description {
@@ -289,9 +285,9 @@ const ImgPreview = styled.label`
   text-align:center;
   line-height: 200%;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
+  font-family: '양진체';
   color: ${(props) => props.imgUrl ? 'transparent' : '#000'};
-
 
   cursor: pointer;
 `
@@ -302,6 +298,7 @@ const ListTitle = styled.div`
   box-sizing: border-box;
   font-size: 16px;
   font-weight: 600;
+  font-family: '양진체';
 `
 
 const YoutubeList = styled.div`
@@ -324,7 +321,6 @@ const YoutubeList = styled.div`
     color: #999;
   }
 `
-
 const ListItem = styled.div`
   padding : 10px;
   display: flex;
@@ -333,17 +329,16 @@ const ListItem = styled.div`
   cursor:pointer;
 
   &:hover {
-      background-color:#ffeeef;
-      color: #000;
+    background-color:#ffeeef;
+    color: #000;
 
-      button{
-      background-color:#fb8b8c;
-      color: #000;
-      }
+    button{
+    background-color:#fb8b8c;
+    color: #000;
     }
+  }
 
-
-    button {
+  button {
     margin-top: 15px;
     width: 60px;
     height: 40px;
@@ -356,7 +351,6 @@ const ListItem = styled.div`
     color: #fb8b8c;
     background-color:#ffeeef;
     cursor:pointer;
-
   }
 `
 
@@ -384,7 +378,8 @@ const GoToYoutube = styled.div`
   p {
     margin : 0px 10px;
     color: #999;
-    font-size: 14px;
+    font-size: 16px;    
+    font-family: '양진체';
   }
 `
 
@@ -398,9 +393,10 @@ const YoutubeBtn = styled.a`
   border-radius: 10px;
   margin-left: 10px;
   width: 130px;
-  padding : 0px 10px;
+  padding : 4px 10px 0px 10px;
   height: 30px;
-  font-size: 12px;
+  font-size: 14px;
+  font-family: '양진체';
 
   &:visited{
     color: #999;
@@ -416,23 +412,23 @@ const YoutubeIcon = styled.span`
 `
 
 const Button = styled.button`
-    padding: 16px;
-    width: 60%;
-    margin: 80px 0px 20px 0px;
-    outline: none;
-    border: 3px solid black;
-    border-radius: 50px;
-    box-shadow: 2px 5px 0px #000;
-    font-size: 20px;
-    font-weight: 600;
-    color: #fff;
-    cursor:pointer;
-    background-color:#49b0ab;
+  padding: 16px;
+  width: 60%;
+  margin: 80px 0px 20px 0px;
+  outline: none;
+  border: 3px solid black;
+  border-radius: 50px;
+  box-shadow: 2px 5px 0px #000;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  cursor:pointer;
+  background-color:#49b0ab;
 
-    &:hover {
-      background-color:#fae209;
-      color: #000;
-    }
+  &:hover {
+    background-color:#fae209;
+    color: #000;
+  }
 `
 
 export default Write;
