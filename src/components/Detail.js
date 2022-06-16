@@ -19,6 +19,7 @@ const Detail = (props) => {
     const navigate = useNavigate();
     const is_login = props.is_login
     const user_info = props.user_info[0]
+    
 
     //페이지 인덱스값 받아오기
     const params = useParams();
@@ -68,7 +69,7 @@ const Detail = (props) => {
     const addComment= () => {
         const new_commnet ={
             comment: comment_ref.current.value,
-            nickname : "김상선",
+            nickname : user_info.nickname,
         }
         dispatch(createCommentAX(id,new_commnet))
     }
