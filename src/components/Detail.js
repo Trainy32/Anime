@@ -75,12 +75,7 @@ const Detail = (props) => {
     }
 
     const addlike=()=>{
-        const like = {
-            post_id : id,
-            user_id: user_info.user_id
-        }
-        dispatch(likeAX(id,like))
-
+        dispatch(likeAX(id))
     }
 
    
