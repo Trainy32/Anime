@@ -1,4 +1,5 @@
 import axios from 'axios';
+import instance from '../../shared/Request'
 
 const LOAD ='comment/LOAD'
 const CREATE ="comment/CREATE"
@@ -33,16 +34,26 @@ export const loadCommentAX = (post_id) =>{
 
 export const createCommentAX = (post_id,comments) => {
     return function (dispatch) {
-      axios.post(`http://54.180.121.151/api/comment${post_id}`, comments)
+        instance.post(`http://54.180.121.151/api/comment/${post_id}`, comments)
       .then(() => dispatch(createComment(comments)))
     }
   }
 
-  export const updateCommnetAX = (comment_id, commentData) => {
-    return function (dispatch) { 
-      axios.patch('http://localhost:5001/comments/'+comment_id, commentData)
-      .then(() => { dispatch(updateComment(commentData))
-      })
+//   export const updateCommnetAX = (comment_id, commentData) => {
+//     return function (dispatch) { 
+//       axios.patch('http://localhost:5001/comments/'+comment_id, commentData)
+//       .then(() => { dispatch(updateComment(commentData))
+//       })
+//     }
+//   }
+
+//좋아요
+
+export const likeAX = (id, user_id) => {
+    return function (dispatch){
+        axios.patch(`http://54.180.121.151/api/post/like/${id}`,user_id)
+        .then((response) => console.log(response));
+        // .catch((error) => console.log(error));
     }
   }
 
