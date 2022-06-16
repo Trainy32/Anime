@@ -158,7 +158,15 @@ function Signup() {
 
 
 const SignWrap = styled.div`
-padding-top: 40px;
+font-family: '양진체';
+padding: 50px;
+width: 578px;
+border: 3px solid #000;
+margin-top: 40px;
+margin: 40px auto;
+border-radius: 22px;
+box-shadow: 0px 10px 0px 0px;
+
 `
 
 const Title = styled.h1`
@@ -202,9 +210,10 @@ button.checkBtn {
   padding: 17px 11px;
   width: 27%;
   margin-left: 3%;
-  background: #000;
+  background: #49B0AB;
   color: #fff;
   border-radius: 2px;
+  font-family: '양진체';
 }
 `;
 
@@ -232,10 +241,13 @@ const InputBtn = styled.button`
   width: 100%;
   padding: 16px 10px;
   margin-top: 30px;
-  background: #000;
+  background: #49B0AB;
   border: none;
+  border-radius: 5px;
   color:#fff;
   font-size: 18px;
   cursor: pointer;
+  font-family: '양진체';
+  
 `;
 export default Signup;
