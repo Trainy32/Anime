@@ -133,33 +133,28 @@ function Write(props) {
   }
 
   return (
-    <div>
-      <button onClick={() => navigate('/')}>임시버튼 : 리스트 가기</button>
-
-      <InputAreas>
+      <Wrap>
         <ImgPreview htmlFor="post_thumb" imgUrl={imgUrl}> 이미지를 <br /> 선택해주세요 </ImgPreview>
 
-        <Right>
-          <label>만화제목
-            <input type='text' ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
-              defaultValue={thisPost ? thisPost.title : ''} /></label>
+        <InputAreas>
+          <label>만화제목 </label>
+            <input type='text' id="title" ref={title_ref} placeholder="추억 속 만화 제목을 적어주세요"
+              defaultValue={thisPost ? thisPost.title : ''} />
 
-          <label>방영연도
+          <label>방영연도</label>
             <input type='number' ref={onair_year_ref}
-              defaultValue={thisPost ? thisPost.onair_year : '2000'} /></label>
-
+              defaultValue={thisPost ? thisPost.onair_year : '2000'} />
           <input type='file' id="post_thumb" ref={thumbnail_ref} onChange={uploadImg} />
-
           <div id="description">
             <label> 만화소개 </label>
             <textarea ref={content_ref} placeholder="당신의 추억 속 이 만화는 어떤 만화였나요?"
               defaultValue={thisPost ? thisPost.content : ''} />
           </div>
 
-          <label>만화 OST
+          <label htmlFor={ost_url_ref}>만화 OST</label>
             <input type='url' ref={ost_url_ref}
               defaultValue={thisPost ? thisPost.ost_url : ''} placeholder="클릭하면 자동 검색 ! (직접 입력도 가능)"
-              onClick={youtubeSearch} /></label>
+              onClick={youtubeSearch} />
 
 
           <ListTitle>유튜브에서 찾아보세요! (만화 제목 기준 검색)</ListTitle>
@@ -167,13 +162,13 @@ function Write(props) {
             {searchResult ?
               searchResult.map((v, i) => {
                 return (
-                  <ListItem key={i}>
+                  <ListItem key={i} onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)} >
                     <VideoThumb video_thumb={v.snippet.thumbnails.default.url} />
                     <VideoText>
-                      <h5> {v.snippet.title} </h5>
+                      {v.snippet.title}
                       {/* <p> { v.snippet.description } </p> */}
-                      <button onClick={() => setOstUrl('https://www.youtube.com/watch?v=' + v.id.videoId)}> 선택 </button>
                     </VideoText>
+                    <button> 선택 </button>
                   </ListItem>
                 )
               })
@@ -189,38 +184,53 @@ function Write(props) {
               </YoutubeIcon>  유튜브 바로가기
             </YoutubeBtn>
           </GoToYoutube>
-        </Right>
+        </InputAreas>
 
-      </InputAreas>
-
-      {isNew ?
+        {isNew ?
         <Button onClick={writePost}> 등록하기 </Button>
         : <Button onClick={EditPost}> 수정하기 </Button>
       }
-    </div>
+
+      </Wrap>
   )
 }
 
-const InputAreas = styled.div`
-  margin: 120px auto 20px auto;
+const Wrap = styled.div`
+  margin: 50px auto 20px auto;
+  padding: 50px;
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items:center;
   width: 90%;
-  max-width: 900px;
+  max-width: 600px;
   text-align: left;
+
+  border: 3px solid black;
+  border-radius: 30px;
+  box-shadow: 3px 8px 0px #000;
 `
-const Right = styled.div`
+const InputAreas = styled.div`
   display:flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  margin-left: 5%;
-  width: 60%;
+  width: 80%;
 
   input {
     height: 30px;
-    width: 70%;
-    margin: 10px;
+    padding: 10px 20px;
+    width: 90%;
+    margin: 10px 0px 30px 0px;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 15px;
+    font-size: 15px;
+
+    &:focus {
+      border: 2px solid #49b0ab;
+      background-color:#e6f4f4;
+      color: #49b0ab;
+    }
   }
 
   input[type='file'] {
@@ -228,41 +238,59 @@ const Right = styled.div`
     height:0px;
     margin: -1px;
     padding: 0px;
+    border: 0px;
     overflow:hidden;
   }
 
   label {
-    text-align: left
+    text-align: left;
+    font-weight: 600;
   }
 
   #description {
-    margin: 10px 0px;
     display:flex;
+    flex-direction: column;
     text-align: left;
     gap: 10px;
   }
 
   textarea {
-    height: 80px;
-    width: 70%;
+    height: 90px;
+    padding: 20px;
+    width: 90%;
+    border: 2px solid black;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    font-size: 15px;
+    font-family: '';
+
+    &:focus {
+      outline: none;
+      border: 2px solid #49b0ab;
+      background-color:#e6f4f4;
+      color: #49b0ab;
+    }
   }
 `
 
 const ImgPreview = styled.label`
-  background-color: #ddd;
-  background: ${(props) => props.imgUrl ? 'url(' + props.imgUrl + ')' : '#ddd'};
+  background: ${(props) => props.imgUrl ? 'url(' + props.imgUrl + ')' : '#eee'};
   background-size: cover;
-  height: 400px;
-  width: 50%;
-  max-width:300px;
+  height: 250px;
+  width: 180px;
+  border-radius: 20px;
+  border: 2px solid #000;
+  margin: 30px;
+  box-shadow: 2px 5px 0px #000;
 
   display: flex;
   align-items: center;
   justify-content: center;
   text-align:center;
   line-height: 200%;
-  font-size: 24px;
-  color: ${(props) => props.imgUrl ? 'transparent' : '#999'};
+  font-size: 18px;
+  font-weight: 600;
+  color: ${(props) => props.imgUrl ? 'transparent' : '#000'};
 
 
   cursor: pointer;
@@ -271,37 +299,65 @@ const ImgPreview = styled.label`
 
 const ListTitle = styled.div`
   width:100%;
-  margin: 10px 10px -1px 10px;
-  padding: 0px;
-  border: 1px solid #ddd;
   box-sizing: border-box;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
-  padding: 5px;
-  background-color: #ddd;
 `
 
 const YoutubeList = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
-  padding: 10px;
-  height: 150px;
-  box-sizing: border-box;
+  border: 2px solid #000;
+  border-radius: 20px;
+  height: 250px;
   overflow: auto;
-  width:100%;
-  margin: 0px 0px 10px 10px ;
+  width: 100%;
+  margin: 10px 0px ;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 
   p {
-    margin : 0px;
+    margin : 20px;
     line-height: 200%;
     color: #999;
   }
 `
 
 const ListItem = styled.div`
+  padding : 10px;
   display: flex;
-  margin-bottom: 10px;
+  margin: 10px 10px 0px 10px;
+  border-radius: 20px;
+  cursor:pointer;
+
+  &:hover {
+      background-color:#ffeeef;
+      color: #000;
+
+      button{
+      background-color:#fb8b8c;
+      color: #000;
+      }
+    }
+
+
+    button {
+    margin-top: 15px;
+    width: 60px;
+    height: 40px;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 50px;
+    box-shadow: 1px 3px 0px #000;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fb8b8c;
+    background-color:#ffeeef;
+    cursor:pointer;
+
+  }
 `
 
 const VideoThumb = styled.div`
@@ -310,12 +366,15 @@ const VideoThumb = styled.div`
   min-width: 100px;
   background: url(${(props) => props.video_thumb}) center;
   background-size: cover;
+  border-radius: 5px;
 `
 
 const VideoText = styled.div`
   margin: 0px 10px;
   text-align: left;
-  font-size: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 70%;
 `
 
 const GoToYoutube = styled.div`
@@ -357,10 +416,23 @@ const YoutubeIcon = styled.span`
 `
 
 const Button = styled.button`
-  height: 50px;
-  width: 80%;
-  max-width: 800px;
-  margin-top: 20px;
+    padding: 16px;
+    width: 60%;
+    margin: 80px 0px 20px 0px;
+    outline: none;
+    border: 3px solid black;
+    border-radius: 50px;
+    box-shadow: 2px 5px 0px #000;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    cursor:pointer;
+    background-color:#49b0ab;
+
+    &:hover {
+      background-color:#fae209;
+      color: #000;
+    }
 `
 
 export default Write;
