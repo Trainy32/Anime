@@ -4,7 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components'
 //post정보
 import {useParams, useNavigate} from 'react-router-dom';
-// 리덕스 관련
+// 리덕스 관련 
 import {useDispatch, useSelector} from 'react-redux'
 import { createCommentAX, loadCommentAX, deleteCommentAX, updateCommnetAX, likeAX } from '../redux/modules/comments'
 import { delete_post_AX, load_posts_like_AX } from "../redux/modules/posts";
@@ -101,7 +101,7 @@ const Detail = (props) => {
            
             
             </Box>
-            <Likebtn onClick={addlike}><Heart/></Likebtn>
+            <Likebtn onClick={addlike}><Heart/> 좋아요 </Likebtn>
             
         </Div>
         
@@ -116,7 +116,7 @@ const Detail = (props) => {
         </Movie>
         <div style={{display: 'flex'}}>
             <Button onClick={delete_post}>글 삭제하기</Button>
-            <Button onClick={delete_post}>글 수정하기</Button>
+            <Button onClick={() => navigate('/write/' + id)}>글 수정하기</Button>
         </div>
 
         <Content>
