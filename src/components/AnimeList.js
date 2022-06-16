@@ -85,7 +85,7 @@ function AnimeList() {
       <Wrap>
         
       <ListingOption>
-          <ToTop onClick={scrollToTop}> Scroll </ToTop>
+          <ToTop onClick={scrollToTop}> UP </ToTop>
           <OrderByLike onClick={orderby_like} list_order={listOrder}> 추천순 </OrderByLike>
           <OrderByYear onClick={orderby_year} list_order={listOrder}> 연도순 </OrderByYear>
         </ListingOption >
@@ -94,12 +94,12 @@ function AnimeList() {
           <AutoSizer>
             {({ height, width }) => (
               <Grid
-                columnCount={Math.floor(width / 330)}
+                columnCount={Math.floor(width / 340)}
                 columnWidth={340}
                 height={height}
-                rowCount={Math.ceil(posts.length / Math.floor(width / 330))}
+                rowCount={Math.ceil(posts.length / Math.floor(width / 340))}
                 rowHeight={530}
-                width={width}
+                width={width + 80}
                 itemData={[posts, Math.floor(width / 340)]}
                 ref={listRef}
               >
@@ -125,7 +125,6 @@ const ListingOption = styled.div`
 display: flex;
 flex-direction: row;
 justify-content: flex-end;
-font-weight: 600;
 font-size: 30px;
 /* background-color: #49b0ab; */
 width: 100%;
@@ -136,14 +135,14 @@ button {
   cursor:pointer;
   max-width: 170px;
   margin: 0px 10px;
-  padding: 14px;
+  padding: 14px 20px 12px 20px;
   outline: none;
   border: 3px solid #000;
   border-radius: 50px;
   box-shadow: 2px 5px 0px #000;
-  font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   text-align:center;
+  font-family: '양진체';
 }
 `
 const ToTop = styled.button`
@@ -162,8 +161,9 @@ width: 88vw;
 min-width: 380px;
 box-sizing: border-box;
 padding: 2vh 0px 0px 5vw;
-height: 65vh;
+height: 63vh;
 margin: 0px;
+font-family: '양진체';
 `
 
 const GridBox = styled.div`
@@ -191,10 +191,14 @@ const CardLabel = styled.div`
 
   h3 {
     margin: 0px;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 2px;
   }
 
   p {
-    margin: 0px;
+    margin-top: 2px;
+    font-size: 16px;
   }
 
   span{
@@ -202,6 +206,7 @@ const CardLabel = styled.div`
     align-items: center;
     margin: 30px 0px;
     gap: 5px;
+    font-size: 16px;
   }
 `
 const Heart =styled.div`
@@ -209,6 +214,7 @@ const Heart =styled.div`
   width: 26px;
   background: url('https://firebasestorage.googleapis.com/v0/b/mymagazinepjt.appspot.com/o/animeImg%2F1655315827434?alt=media&token=ca9a6660-b19a-49c2-bb13-30e58a488e7c') no-repeat center;
   background-size: contain;
+  margin-bottom: 10px;
 `
 
 const CardThumb = styled.div`

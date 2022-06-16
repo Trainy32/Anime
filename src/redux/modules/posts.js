@@ -56,9 +56,6 @@ export const create_post_AX = (post_data) => {
 
 export const update_post_AX = (post_id, post_data) => {
   return function (dispatch) { 
-    // axios.patch('http://localhost:5001/posts/'+post_id, post_data)
-    // .then(() => { dispatch(update_post(post_data))
-
     instance.patch('http://54.180.121.151/api/post/'+post_id, post_data)
     .then((response) => {
       window.alert(response.data.msg)

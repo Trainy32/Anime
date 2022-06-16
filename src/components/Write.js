@@ -161,7 +161,6 @@ function Write(props) {
                   <VideoThumb video_thumb={v.snippet.thumbnails.default.url} />
                   <VideoText>
                     {v.snippet.title}
-                    {/* <p> { v.snippet.description } </p> */}
                   </VideoText>
                   <button> 선택 </button>
                 </ListItem>
@@ -240,6 +239,8 @@ const InputAreas = styled.div`
   label {
     text-align: left;
     font-weight: 600;
+    
+    font-family: '양진체';
   }
 
   #description {
@@ -284,7 +285,8 @@ const ImgPreview = styled.label`
   text-align:center;
   line-height: 200%;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
+  font-family: '양진체';
   color: ${(props) => props.imgUrl ? 'transparent' : '#000'};
 
   cursor: pointer;
@@ -296,6 +298,7 @@ const ListTitle = styled.div`
   box-sizing: border-box;
   font-size: 16px;
   font-weight: 600;
+  font-family: '양진체';
 `
 
 const YoutubeList = styled.div`
@@ -375,7 +378,8 @@ const GoToYoutube = styled.div`
   p {
     margin : 0px 10px;
     color: #999;
-    font-size: 14px;
+    font-size: 16px;    
+    font-family: '양진체';
   }
 `
 
@@ -389,9 +393,10 @@ const YoutubeBtn = styled.a`
   border-radius: 10px;
   margin-left: 10px;
   width: 130px;
-  padding : 0px 10px;
+  padding : 4px 10px 0px 10px;
   height: 30px;
-  font-size: 12px;
+  font-size: 14px;
+  font-family: '양진체';
 
   &:visited{
     color: #999;
