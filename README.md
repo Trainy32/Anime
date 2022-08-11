@@ -31,10 +31,6 @@
 <b> 시연 영상 </b> <br/>
 https://www.youtube.com/watch?v=_U0lL7_E7qU&feature=youtu.be <br/>
 <br/>
-<b> 접속 링크 </b> <br/>
-http://suhyun.site.s3-website.ap-northeast-2.amazonaws.com/
-<br/>
-<br/>
 
 
 <h2>💻 핵심기능 </h2>
